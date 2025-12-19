@@ -6,7 +6,7 @@ import type { CourseData } from 'types/api/courses';
 import { CourseCard } from '@/components';
 import { CourseCardSkeleton } from '@/components/course-card/skeleton';
 import { useCurrentInstitution } from '@/hooks';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import { useQuerySearchBannerPromos } from '../banner-promo/api/query';
 import { useCourseGrid } from './hooks';
 import styles from './styles.module.scss';

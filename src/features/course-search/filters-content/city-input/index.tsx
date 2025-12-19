@@ -44,7 +44,7 @@ export function CityInput({ control }: CityInputProps) {
       render={({ field }) => (
         <CityAutocomplete
           value={cityValue || ''}
-          onChange={field.onChange}
+          handleChange={field.onChange}
           name={field.name}
         />
       )}

@@ -2,7 +2,7 @@ import { useParams } from 'next/navigation';
 import { useMemo, useState } from 'react';
 import { useCityContext } from '@/contexts/city';
 import { useGeolocation } from '@/hooks';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import { useQueryClientUnits, useQueryUnitById } from './api/query';
 import type { InfrastructureImage, InfrastructureUnit } from './types';
 import { markClosestUnit } from './utils';

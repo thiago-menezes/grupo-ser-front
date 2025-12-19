@@ -3,7 +3,7 @@ import { useRef } from 'react';
 import { Button } from 'reshaped';
 import { Icon, Pagination } from '@/components';
 import { useCurrentInstitution, usePagination } from '@/hooks';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import { useAreasOfInterest } from './api/query';
 import { useAreaSelector } from './hooks';
 import styles from './styles.module.scss';

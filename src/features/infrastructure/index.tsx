@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Button, Text } from 'reshaped';
 import { Icon } from '@/components';
 import { useCityContext } from '@/contexts/city';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import { useInfrastructure } from './hooks';
 import { ImageModal } from './image-modal';
 import styles from './styles.module.scss';

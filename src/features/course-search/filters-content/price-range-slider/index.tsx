@@ -1,7 +1,7 @@
 import { Controller } from 'react-hook-form';
 import type { Control } from 'react-hook-form';
 import { FormControl, Slider, Text, View } from 'reshaped';
-import { formatPrice } from '@/packages/utils';
+import { formatPrice } from '@/utils';
 import type { CourseFiltersFormValues } from '../../types';
 import styles from './styles.module.scss';
 

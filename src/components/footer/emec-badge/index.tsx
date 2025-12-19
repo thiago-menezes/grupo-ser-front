@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Text } from 'reshaped';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import styles from './styles.module.scss';
 import type { EmecBadgeProps } from './types';
 

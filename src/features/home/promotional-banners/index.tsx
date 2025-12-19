@@ -2,7 +2,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useState, useEffect } from 'react';
 import { Pagination } from '@/components/pagination';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import { usePromotionalBanners } from './api';
 import type { PromotionalBannerItemDTO } from './api/types';
 import { useScrollPagination } from './hooks';

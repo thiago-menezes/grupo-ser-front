@@ -2,7 +2,7 @@ export type CityAutocompleteProps = {
   /** Current city value (can be technical format "city:name-state:code" or simple name) */
   value?: string;
   /** Callback when city is selected */
-  onChange: (cityValue: string) => void;
+  handleChange: (cityValue: string) => void;
   /** Label for the form control */
   label?: string;
   /** Placeholder text */

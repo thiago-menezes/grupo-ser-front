@@ -1,0 +1,3 @@
+{
+  "eslint.runtime": "/opt/homebrew/bin/node"
+}

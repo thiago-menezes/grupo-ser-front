@@ -1,4 +1,4 @@
-import { formatPrice } from '@/packages/utils';
+import { formatPrice } from '@/utils';
 import { CourseDTO } from './types';
 
 export function transformCourseDTO(dto: CourseDTO) {

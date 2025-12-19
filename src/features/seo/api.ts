@@ -1,4 +1,4 @@
-import { createStrapiClient } from '@/packages/bff/services/strapi';
+import { createStrapiClient } from '@/bff/services/strapi';
 import type { StrapiSeoResponse } from './types';
 
 function getStrapiUrl(): string {

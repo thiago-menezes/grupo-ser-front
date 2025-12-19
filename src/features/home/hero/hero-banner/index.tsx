@@ -2,7 +2,7 @@ import { clsx } from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useEffect, useLayoutEffect, useRef, useState } from 'react';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import styles from './styles.module.scss';
 import type { HeroBannerProps } from './types';
 

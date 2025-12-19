@@ -3,7 +3,7 @@ import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 import { Button, Text, TextField, View } from 'reshaped';
 import { withMask } from 'use-mask-input';
-import { formatPrice } from '@/packages/utils';
+import { formatPrice } from '@/utils';
 import { CourseLocationSelector } from '../course-location-selector';
 import type { CourseDetails } from '../types';
 import styles from './styles.module.scss';

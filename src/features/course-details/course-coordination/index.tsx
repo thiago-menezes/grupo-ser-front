@@ -2,7 +2,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import { Button, Tabs, Text, View } from 'reshaped';
 import { Icon, MarkdownContent } from '@/components';
-import { getMediaUrl } from '@/packages/utils';
+import { getMediaUrl } from '@/utils';
 import type { CourseDetails } from '../types';
 import { filterTeachersByModality } from '../utils';
 import styles from './styles.module.scss';

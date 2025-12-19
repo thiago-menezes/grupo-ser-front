@@ -4,13 +4,13 @@ import { useState, useRef, useEffect, useMemo, startTransition } from 'react';
 import { FormControl, Autocomplete } from 'reshaped';
 import type { AutocompleteProps } from 'reshaped';
 import { useCitiesAutocomplete, type CityOption } from '@/hooks';
-import { formatCityDisplayValue } from '@/utils/city-formatting';
+import { formatCityDisplayValue } from '@/utils/format-city';
 import { Icon } from '../icon';
 import { CityAutocompleteProps } from './types';
 
 export function CityAutocomplete({
   value = '',
-  onChange,
+  handleChange,
   label = 'Em que cidade quer estudar?',
   placeholder = 'Encontre sua cidade',
   disabled = false,
@@ -75,7 +75,7 @@ export function CityAutocomplete({
 
     // Clear selection if user is typing something different
     if (value !== currentDisplayValue) {
-      onChange('');
+      handleChange('');
     }
 
     // Reset typing flag after delay
@@ -105,7 +105,7 @@ export function CityAutocomplete({
 
       // Set city from selected option
       isUserTypingRef.current = false;
-      onChange(option.value);
+      handleChange(option.value);
       // Use the label (value from Autocomplete.Item) for display
       setInputValue(value || option.label);
     }
