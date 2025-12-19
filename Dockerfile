@@ -9,13 +9,10 @@ RUN apk add --no-cache libc6-compat
 WORKDIR /app
 
 # Copy package manager files
-COPY package.json yarn.lock .yarnrc.yml ./
-COPY .yarn ./.yarn
+COPY package.json package-lock.json ./
 
-# Enable corepack and install dependencies
-RUN corepack enable && \
-    corepack prepare yarn@4.9.4 --activate && \
-    yarn install --immutable
+# Install dependencies using npm ci for reproducible builds
+RUN npm ci
 
 # ===================================
 # Stage 2: Build application
@@ -33,9 +30,7 @@ ENV NODE_ENV=production
 
 # Build Next.js application
 # The standalone output will be in .next/standalone
-RUN corepack enable && \
-    corepack prepare yarn@4.9.4 --activate && \
-    yarn build
+RUN npm run build
 
 # ===================================
 # Stage 3: Production runtime
