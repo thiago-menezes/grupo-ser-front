@@ -1,0 +1,11 @@
+.filtersButtonSection {
+  display: block;
+
+  @media (--rs-viewport-l) {
+    display: none;
+  }
+}
+
+.filtersButton {
+  white-space: nowrap;
+}

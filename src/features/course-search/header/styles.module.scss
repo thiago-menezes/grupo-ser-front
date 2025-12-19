@@ -1,0 +1,13 @@
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x4);
+}
+
+.homeLink {
+  color: var(--rs-color-foreground-neutral-faded);
+  text-decoration: none;
+  &:hover {
+    color: var(--rs-color-foreground-primary);
+  }
+}

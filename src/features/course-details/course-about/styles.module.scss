@@ -1,0 +1,9 @@
+.about {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x5);
+}
+
+.description {
+  // MarkdownContent component handles styling internally
+}

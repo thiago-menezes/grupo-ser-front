@@ -1,0 +1,37 @@
+{
+  "@context": "https://schema.org",
+  "@type": "EducationalOrganization",
+  "name": "UNAMA",
+  "alternateName": "UNAMA - Universidade da Amazônia",
+  "url": "https://www.unama.br",
+  "logo": "https://www.unama.br/images/logo.png",
+  "description": "Referência em ensino superior na Amazônia, com alta empregabilidade e tradição de mais de 40 anos.",
+  "address": {
+    "@type": "PostalAddress",
+    "addressCountry": "BR",
+    "addressLocality": "Belém",
+    "addressRegion": "PA",
+    "postalCode": "66000-000",
+    "streetAddress": "Av. Alcindo Cacela, 123"
+  },
+  "telephone": "+55-91-3000-0000",
+  "sameAs": [
+    "https://www.facebook.com/unama",
+    "https://www.instagram.com/unama",
+    "https://www.linkedin.com/company/unama",
+    "https://www.youtube.com/unama",
+    "https://twitter.com/unama"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "priceCurrency": "BRL",
+    "availability": "https://schema.org/InStock",
+    "price": "800",
+    "priceValidUntil": "2025-12-31"
+  },
+  "parentOrganization": {
+    "@type": "Organization",
+    "name": "Grupo Ser Educacional",
+    "url": "https://www.sereducacional.com.br"
+  }
+}

@@ -1,0 +1,27 @@
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1232px !important;
+}
+
+.contentSide {
+  padding: var(--rs-unit-x6);
+  padding-top: calc(var(--rs-unit-x10) * 2);
+
+  @media (--rs-viewport-m) {
+    gap: var(--rs-unit-x6);
+  }
+}
+
+.logoWrapper {
+  margin-bottom: var(--rs-unit-x2);
+}
+
+.title {
+  margin-bottom: var(--rs-unit-x2);
+  max-width: 520px;
+}
+
+.subtitle {
+  max-width: 500px;
+}

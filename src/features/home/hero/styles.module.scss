@@ -1,0 +1,98 @@
+.wrapper {
+  width: 100%;
+  position: relative;
+  padding: var(--rs-unit-x6) var(--rs-unit-x1) 0 var(--rs-unit-x1);
+}
+
+.container {
+  max-width: 1320px;
+  margin: 0 auto;
+  position: relative;
+}
+
+.heroSection {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.heroCard {
+  position: relative;
+  width: 100%;
+  pointer-events: none;
+  aspect-ratio: 5 / 2;
+  border-radius: var(--rs-radius-large);
+  overflow: hidden;
+  padding: 0 calc(var(--rs-unit-x1) * 6);
+}
+
+.carouselControlsWrapper {
+  position: absolute;
+  top: 50%;
+  left: 8px;
+  right: 8px;
+  transform: translateY(-50%);
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  pointer-events: none;
+}
+
+.carouselLeftButton,
+.carouselRightButton {
+  pointer-events: auto;
+  z-index: 11;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 24px;
+  height: 24px;
+  background: var(--rs-color-background-primary);
+  border: none;
+  border-radius: var(--rs-radius-medium);
+  color: var(--rs-color-white);
+  cursor: pointer;
+  transition: all var(--rs-duration-medium) var(--rs-easing-standard);
+  padding: 0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+
+  &:hover {
+    background: var(--rs-color-foreground-primary);
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.25);
+  }
+
+  &:active {
+    transform: scale(0.95);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--rs-color-white);
+    outline-offset: 2px;
+  }
+}
+
+.carouselIndicators {
+  position: absolute;
+  right: var(--rs-unit-x8);
+  top: 8px;
+  z-index: 10;
+  pointer-events: auto;
+}
+
+.searchFormContainer {
+  position: relative;
+  border-radius: calc(var(--rs-radius-medium) + 4px);
+  padding: var(--rs-unit-x6) var(--rs-unit-x4);
+  width: 100%;
+  max-width: 1080px;
+  margin: 0 auto;
+  z-index: 10;
+
+  @media (--rs-viewport-m) {
+    top: -56px;
+    padding: 0 var(--rs-unit-x8);
+  }
+}

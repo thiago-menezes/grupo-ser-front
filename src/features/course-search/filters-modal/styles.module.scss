@@ -1,0 +1,12 @@
+.filtersModal {
+  padding: 0;
+}
+
+.filtersModalContent {
+  width: calc(100vw - var(--rs-unit-x8));
+  max-width: 480px;
+  min-height: 600px;
+  background: var(--rs-color-background-elevation-base);
+  border-radius: var(--rs-radius-large);
+  padding: var(--rs-unit-x4);
+}

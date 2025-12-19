@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Engenharia & Tecnologia",
+    "slug": "engenharia-tecnologia"
+  },
+  {
+    "id": 2,
+    "name": "Ciências Humanas",
+    "slug": "ciencias-humanas"
+  },
+  {
+    "id": 3,
+    "name": "Ciências da Saúde",
+    "slug": "ciencias-da-saude"
+  },
+  {
+    "id": 4,
+    "name": "Ciências Exatas e da Terra",
+    "slug": "ciencias-exatas"
+  },
+  {
+    "id": 5,
+    "name": "Gestão e Negócios",
+    "slug": "gestao-negocios"
+  },
+  {
+    "id": 6,
+    "name": "Direito",
+    "slug": "direito"
+  }
+]

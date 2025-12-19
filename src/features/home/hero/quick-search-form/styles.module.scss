@@ -1,0 +1,130 @@
+.form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  border-radius: var(--rs-radius-large);
+
+  @media screen and (max-width: 420px) {
+    background-color: var(--rs-color-background-page);
+  }
+}
+
+.tabsContainer {
+  display: flex;
+  width: fit-content;
+  background-color: var(--rs-color-background-page);
+  padding: var(--rs-unit-x3);
+  padding-bottom: 0;
+  border-radius: var(--rs-radius-large) var(--rs-radius-large) 0 0;
+  gap: var(--rs-unit-x2);
+}
+
+.inputsContainer {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--rs-unit-x3);
+  width: 100%;
+  background-color: var(--rs-color-background-page);
+  padding: var(--rs-unit-x3);
+  border-radius: 0 var(--rs-radius-large) 0 0;
+
+  @media (min-width: 660px) {
+    grid-template-columns: 1fr 1fr auto;
+    gap: var(--rs-unit-x4);
+    align-items: flex-end;
+  }
+
+  @media (min-width: 1024px) {
+    gap: var(--rs-unit-x5);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.filtersContainer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--rs-unit-x2);
+  padding: var(--rs-unit-x3);
+  background-color: var(--rs-color-background-page);
+  border-radius: 0 0 var(--rs-radius-large) var(--rs-radius-large);
+
+  @media (min-width: 768px) {
+    gap: var(--rs-unit-x3);
+  }
+
+  @media (min-width: 1024px) {
+    gap: var(--rs-unit-x4);
+  }
+}
+
+.filtersLabel {
+  font-size: 12px;
+  font-weight: var(--rs-font-weight-semibold);
+  color: var(--rs-color-foreground-neutral);
+  text-transform: capitalize;
+
+  @media (min-width: 768px) {
+    font-size: 13px;
+  }
+
+  @media (min-width: 1024px) {
+    font-size: 14px;
+  }
+}
+
+.filterOptions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--rs-unit-x3);
+
+  @media (min-width: 768px) {
+    gap: var(--rs-unit-x4);
+  }
+
+  @media (min-width: 1024px) {
+    gap: var(--rs-unit-x5);
+  }
+}
+
+.geolocationOption {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+}
+
+.secondaryButton {
+  background-color: var(--rs-color-background-secondary);
+  border-color: var(--rs-color-border-secondary);
+  color: var(--rs-color-on-brand);
+
+  &:hover:not(:disabled) {
+    background-color: var(--rs-color-foreground-secondary);
+    border-color: var(--rs-color-border-secondary);
+  }
+
+  &:active:not(:disabled) {
+    background-color: var(--rs-color-border-secondary);
+  }
+}
+
+.secondaryCheckbox {
+  input[type='checkbox']:checked + div {
+    background-color: var(--rs-color-background-secondary);
+    border-color: var(--rs-color-border-secondary);
+  }
+
+  input[type='checkbox']:checked:hover:not(:disabled) + div {
+    background-color: var(--rs-color-foreground-secondary);
+    border-color: var(--rs-color-border-secondary);
+  }
+
+  input[type='checkbox']:checked:active:not(:disabled) + div {
+    background-color: var(--rs-color-border-secondary);
+  }
+}

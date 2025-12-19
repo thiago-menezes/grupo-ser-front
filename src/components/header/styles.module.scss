@@ -1,0 +1,223 @@
+.header {
+  background: var(--rs-color-background-page);
+  box-shadow: 0 1px 4px
+    rgba(from var(--rs-color-on-background-neutral) r g b / 0.08);
+}
+
+.container {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 0 var(--rs-unit-x4);
+}
+
+/* Top Utility Bar */
+.topBar {
+  background: var(--rs-color-background-page);
+  border-bottom: 1px solid
+    rgba(from var(--rs-color-background-neutral) r g b / 0.6);
+}
+
+.topBarContent {
+  display: flex;
+  justify-content: flex-end;
+  padding: var(--rs-unit-x2) 0;
+}
+
+.utilityNav {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x6);
+}
+
+.utilityLink {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x2);
+  font-size: 14px;
+  line-height: var(--rs-unit-x5);
+  color: var(--rs-color-foreground-neutral);
+  text-decoration: none;
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--rs-color-foreground-primary);
+  }
+}
+
+.trackEnrollment {
+  font-weight: var(--rs-font-weight-medium);
+  color: var(--rs-color-text-secondary);
+}
+
+.mainNav {
+  background: var(--rs-color-background-page);
+}
+
+.rightContainer {
+  display: flex;
+  gap: var(--rs-unit-x4);
+}
+
+.mainNavContent {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  justify-content: space-between;
+  gap: clamp(var(--rs-unit-x4), 3vw, var(--rs-unit-x8));
+  padding: var(--rs-unit-x4) 0;
+  min-height: 64px;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  text-decoration: none;
+  flex-shrink: 0;
+}
+
+.logoImage {
+  height: 48px;
+  width: auto;
+  max-width: 200px;
+  object-fit: contain;
+}
+
+/* Desktop Navigation */
+.desktopNav {
+  display: none;
+  align-items: center;
+  flex: 1;
+  justify-content: flex-end;
+  flex-wrap: nowrap;
+  overflow: hidden;
+}
+
+/* Mobile Menu Button */
+.mobileMenuButton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--rs-unit-x2);
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--rs-color-foreground-neutral);
+  transition: color 0.2s ease;
+
+  &:hover {
+    color: var(--rs-color-foreground-primary);
+  }
+}
+
+/* Mobile Navigation */
+.mobileNav {
+  background: var(--rs-color-background-page);
+  border-top: 1px solid rgb(from var(--rs-color-background-neutral) r g b / 0.6);
+  display: none;
+}
+
+.mobileNavOpen {
+  display: block;
+}
+
+.mobileNavContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x1);
+  padding: var(--rs-unit-x4) 0;
+  position: absolute;
+  top: 72px;
+  background-color: var(--rs-color-background-page);
+  z-index: 9999;
+  width: 100%;
+  left: 0;
+  padding: 16px;
+  border-top: 1px solid
+    rgba(from var(--rs-color-background-neutral) r g b / 0.6);
+}
+
+.mobileNavLink {
+  display: block;
+  padding: var(--rs-unit-x3) var(--rs-unit-x4);
+  font-size: 16px;
+  line-height: var(--rs-unit-x6);
+  font-weight: 500;
+  color: var(--rs-color-foreground-neutral);
+  text-decoration: none;
+  border-radius: var(--rs-radius-medium);
+  transition: all 0.2s ease;
+
+  &:hover {
+    background: var(--rs-color-background-primary-faded);
+    color: var(--rs-color-foreground-primary);
+  }
+}
+
+/* Responsive Breakpoints */
+
+/* Mobile only (max-width: 659px) */
+@media (--rs-viewport-s) {
+  .mainNavContent {
+    padding: var(--rs-unit-x3) 0;
+  }
+
+  .logoImage {
+    height: var(--rs-unit-x10);
+    max-width: 160px;
+  }
+
+  .topBar {
+    display: none;
+  }
+}
+
+/* Tablet (min-width: 660px) */
+@media (--rs-viewport-m) {
+  .logoImage {
+    height: 44px;
+    max-width: 160px;
+  }
+
+  .container {
+    padding: 0 var(--rs-unit-x6);
+  }
+}
+
+/* Desktop (min-width: 900px) */
+@media (--rs-viewport-l) {
+  .logoImage {
+    height: 46px;
+    max-width: 180px;
+  }
+}
+
+/* Desktop with nav (min-width: 1200px) */
+@media (min-width: 1200px) {
+  .mobileMenuButton {
+    display: none;
+  }
+
+  .desktopNav {
+    display: flex;
+  }
+
+  .topBar {
+    display: block;
+  }
+
+  .utilityNav {
+    gap: var(--rs-unit-x6);
+  }
+}
+
+@media (--rs-viewport-xl) {
+  .utilityNav {
+    gap: var(--rs-unit-x8);
+  }
+
+  .logoImage {
+    height: 48px;
+    max-width: 200px;
+  }
+}

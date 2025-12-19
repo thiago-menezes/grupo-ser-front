@@ -1,0 +1,92 @@
+{
+  "metadata": {
+    "title": "Cursos de Graduação e Pós-Graduação | UNAMA",
+    "description": "Encontre o curso ideal para você na UNAMA. Referência em ensino superior na Amazônia, com alta empregabilidade e tradição de mais de 40 anos.",
+    "openGraph": {
+      "title": "Cursos de Graduação e Pós-Graduação | UNAMA",
+      "description": "Encontre o curso ideal para você na UNAMA. Referência em ensino superior na Amazônia, com alta empregabilidade e tradição de mais de 40 anos.",
+      "url": "https://www.unama.br/cursos",
+      "siteName": "UNAMA",
+      "type": "website",
+      "locale": "pt_BR",
+      "images": [
+        {
+          "url": "https://www.unama.br/images/og-image.jpg",
+          "width": 1200,
+          "height": 630,
+          "alt": "UNAMA - Cursos de Graduação e Pós-Graduação"
+        }
+      ]
+    },
+    "twitter": {
+      "card": "summary_large_image",
+      "title": "Cursos de Graduação e Pós-Graduação | UNAMA",
+      "description": "Encontre o curso ideal para você na UNAMA. Referência em ensino superior na Amazônia, com alta empregabilidade e tradição de mais de 40 anos.",
+      "images": ["https://www.unama.br/images/twitter-image.jpg"]
+    },
+    "alternates": {
+      "canonical": "https://www.unama.br/cursos",
+      "languages": {
+        "pt-BR": "https://www.unama.br/cursos",
+        "en": "https://www.unama.br/en/courses",
+        "es": "https://www.unama.br/es/cursos"
+      }
+    },
+    "robots": {
+      "index": true,
+      "follow": true,
+      "googleBot": {
+        "index": true,
+        "follow": true,
+        "max-video-preview": -1,
+        "max-image-preview": "large",
+        "max-snippet": -1
+      }
+    },
+    "verification": {
+      "google": "abc123xyz789"
+    },
+    "category": "education",
+    "other": {
+      "article:publisher": "https://www.facebook.com/unama",
+      "article:author": "https://www.unama.br"
+    }
+  },
+  "jsonld": {
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "UNAMA",
+    "alternateName": "UNAMA - Universidade da Amazônia",
+    "url": "https://www.unama.br",
+    "logo": "https://www.unama.br/images/logo.png",
+    "description": "Referência em ensino superior na Amazônia, com alta empregabilidade e tradição de mais de 40 anos.",
+    "address": {
+      "@type": "PostalAddress",
+      "addressCountry": "BR",
+      "addressLocality": "Belém",
+      "addressRegion": "PA",
+      "postalCode": "66000-000",
+      "streetAddress": "Av. Alcindo Cacela, 123"
+    },
+    "telephone": "+55-91-3000-0000",
+    "sameAs": [
+      "https://www.facebook.com/unama",
+      "https://www.instagram.com/unama",
+      "https://www.linkedin.com/company/unama",
+      "https://www.youtube.com/unama",
+      "https://twitter.com/unama"
+    ],
+    "offers": {
+      "@type": "Offer",
+      "priceCurrency": "BRL",
+      "availability": "https://schema.org/InStock",
+      "price": "800",
+      "priceValidUntil": "2025-12-31"
+    },
+    "parentOrganization": {
+      "@type": "Organization",
+      "name": "Grupo Ser Educacional",
+      "url": "https://www.sereducacional.com.br"
+    }
+  }
+}

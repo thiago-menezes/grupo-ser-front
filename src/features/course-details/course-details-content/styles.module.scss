@@ -1,0 +1,41 @@
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x6);
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x6);
+
+  @media (min-width: 1280px) {
+    display: grid;
+    grid-template-columns: 806px 394px;
+    gap: var(--rs-unit-x6);
+    justify-content: center;
+  }
+}
+
+.mainSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x6);
+}
+
+.header {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x4);
+  &::before {
+    position: absolute;
+    top: -24px;
+    left: -100vw;
+    right: -100vw;
+    bottom: -24px;
+    content: '';
+    display: block;
+    background-color: var(--rs-color-background-primary-faded);
+  }
+}

@@ -1,0 +1,44 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: var(--rs-color-white);
+  border-radius: 16px;
+  padding: var(--rs-unit-x3);
+  max-width: 280px;
+  text-decoration: none;
+  transition: transform 0.2s ease;
+  gap: var(--rs-unit-x3);
+
+  &:hover,
+  &:focus-visible {
+    transform: translateY(-4px);
+  }
+}
+
+.header {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.logo {
+  width: auto;
+  height: 32px;
+  object-fit: contain;
+}
+
+.qrCodeWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.qrCode {
+  width: 100%;
+  height: auto;
+  min-width: 90px;
+  max-width: 220px;
+}

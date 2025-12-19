@@ -1,0 +1,21 @@
+.page {
+  padding: var(--rs-unit-x6) 0;
+  min-height: 100vh;
+}
+
+.error {
+  padding: var(--rs-unit-x8);
+  text-align: center;
+
+  h1 {
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: var(--rs-unit-x2);
+    color: var(--rs-color-text-primary);
+  }
+
+  p {
+    font-size: 16px;
+    color: var(--rs-color-foreground-neutral);
+  }
+}

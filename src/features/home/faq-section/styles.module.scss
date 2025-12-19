@@ -1,0 +1,58 @@
+.section {
+  width: 100%;
+  padding: var(--rs-unit-x4);
+}
+
+.container {
+  max-width: 1232px;
+  margin: 0 auto;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x4);
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x2);
+}
+
+.title {
+  font-size: var(--rs-font-size-featured-2);
+  font-weight: var(--rs-font-weight-medium);
+  line-height: var(--rs-line-height-featured-2);
+  color: var(--rs-color-foreground-neutral);
+  margin: 0;
+}
+
+.subtitle {
+  font-size: var(--rs-font-size-body-3);
+  font-weight: var(--rs-font-weight-regular);
+  line-height: var(--rs-line-height-body-3);
+  color: var(--rs-color-foreground-neutral-faded);
+  margin: 0;
+}
+
+.faqList {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x2);
+}
+
+.faqItem {
+  background-color: var(--rs-color-background-primary-faded);
+  border-radius: var(--rs-radius-large);
+  padding-right: var(--rs-unit-x3);
+}
+
+.faqQuestion {
+  padding: var(--rs-unit-x3);
+  font-size: var(--rs-font-size-body-2);
+}
+
+.faqAnswer {
+  padding: 0 var(--rs-unit-x3) var(--rs-unit-x3) var(--rs-unit-x3);
+}

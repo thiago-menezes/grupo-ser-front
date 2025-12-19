@@ -1,0 +1,1 @@
+export { useScrollPagination } from './useScrollPagination';

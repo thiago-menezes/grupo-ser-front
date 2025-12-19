@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Manhã",
+    "slug": "manha",
+    "code": "M"
+  },
+  {
+    "id": 2,
+    "name": "Tarde",
+    "slug": "tarde",
+    "code": "T"
+  },
+  {
+    "id": 3,
+    "name": "Noite",
+    "slug": "noite",
+    "code": "N"
+  },
+  {
+    "id": 4,
+    "name": "Integral",
+    "slug": "integral",
+    "code": "I"
+  },
+  {
+    "id": 5,
+    "name": "Virtual",
+    "slug": "virtual",
+    "code": "V"
+  }
+]

@@ -1,0 +1,9 @@
+.card {
+  background-color: var(--rs-color-background-elevation-base);
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x2);
+  padding: var(--rs-unit-x3);
+  border: 1px solid var(--rs-color-border-neutral);
+  border-radius: var(--rs-radius-large);
+}

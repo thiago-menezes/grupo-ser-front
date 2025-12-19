@@ -1,0 +1,68 @@
+[
+  {
+    "id": 1,
+    "name": "Ciências de Dados",
+    "slug": "ciencias-de-dados",
+    "categoryId": 1,
+    "level": "graduacao",
+    "type": "Bacharelado",
+    "workload": 3600,
+    "description": "Curso de graduação em Ciências de Dados com foco em análise de dados e inteligência artificial",
+    "featured": true
+  },
+  {
+    "id": 2,
+    "name": "Redes de Computadores",
+    "slug": "redes-de-computadores",
+    "categoryId": 1,
+    "level": "graduacao",
+    "type": "Licenciatura",
+    "workload": 2880,
+    "description": "Curso de graduação em Redes de Computadores",
+    "featured": false
+  },
+  {
+    "id": 3,
+    "name": "Análise e Desenvolvimento de Sistemas",
+    "slug": "analise-e-desenvolvimento-de-sistemas",
+    "categoryId": 1,
+    "level": "graduacao",
+    "type": "Bacharelado",
+    "workload": 2400,
+    "description": "Curso de graduação em Análise e Desenvolvimento de Sistemas",
+    "featured": true
+  },
+  {
+    "id": 4,
+    "name": "Engenharia Civil",
+    "slug": "engenharia-civil",
+    "categoryId": 1,
+    "level": "graduacao",
+    "type": "Bacharelado",
+    "workload": 4000,
+    "description": "Curso de graduação em Engenharia Civil",
+    "featured": true
+  },
+  {
+    "id": 5,
+    "name": "Medicina",
+    "slug": "medicina",
+    "categoryId": 3,
+    "level": "graduacao",
+    "type": "Bacharelado",
+    "workload": 8000,
+    "description": "Curso de graduação em Medicina",
+    "featured": true
+  },
+  {
+    "id": 6,
+    "name": "Direito",
+    "slug": "direito",
+    "categoryId": 6,
+    "level": "graduacao",
+    "type": "Bacharelado",
+    "workload": 3600,
+    "description": "Curso de graduação em Direito",
+    "featured": true
+  }
+]

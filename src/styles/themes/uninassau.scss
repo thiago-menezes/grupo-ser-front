@@ -1,0 +1,46 @@
+[data-rs-theme*='uninassau'],
+[data-rs-theme='uninassau'] {
+  --rs-color-brand: #052b82;
+  --rs-color-on-background-primary: oklch(1 0 0);
+  --rs-color-on-brand: oklch(1 0 0);
+}
+
+[data-rs-theme*='uninassau'][data-rs-color-mode='light'],
+[data-rs-theme='uninassau'][data-rs-color-mode='light'] {
+  --rs-color-background-primary: #052b82;
+  --rs-color-background-primary-faded: #dadfec;
+  --rs-color-border-primary: #042062;
+  --rs-color-border-primary-faded: #b4bfda;
+  --rs-color-foreground-primary: #4460a1;
+  --rs-color-rgb-background-primary: 5, 43, 130;
+  --rs-color-rgb-background-primary-faded: 218, 223, 236;
+  --rs-color-text-primary: #052b82;
+  --rs-color-background-secondary: #e2052c;
+  --rs-color-background-secondary-faded: #fce4e8;
+  --rs-color-border-secondary: #b30423;
+  --rs-color-border-secondary-faded: #f5b8c3;
+  --rs-color-foreground-secondary: #f04768;
+  --rs-color-rgb-background-secondary: 226, 5, 44;
+  --rs-color-rgb-background-secondary-faded: 252, 228, 232;
+  --rs-color-text-secondary: #e2052c;
+}
+
+[data-rs-theme*='uninassau'][data-rs-color-mode='dark'],
+[data-rs-theme='uninassau'][data-rs-color-mode='dark'] {
+  --rs-color-background-primary: #042775;
+  --rs-color-background-primary-faded: #01091a;
+  --rs-color-border-primary: #6980b4;
+  --rs-color-border-primary-faded: #021134;
+  --rs-color-foreground-primary: #8295c0;
+  --rs-color-rgb-background-primary: 4, 39, 117;
+  --rs-color-rgb-background-primary-faded: 1, 9, 26;
+  --rs-color-text-primary: #929fbd;
+  --rs-color-background-secondary: #b30423;
+  --rs-color-background-secondary-faded: #1a0104;
+  --rs-color-border-secondary: #f28598;
+  --rs-color-border-secondary-faded: #3d0209;
+  --rs-color-foreground-secondary: #f5a3b0;
+  --rs-color-rgb-background-secondary: 179, 4, 35;
+  --rs-color-rgb-background-secondary-faded: 26, 1, 4;
+  --rs-color-text-secondary: #f5a3b0;
+}

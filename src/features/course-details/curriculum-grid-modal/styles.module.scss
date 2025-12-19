@@ -1,0 +1,24 @@
+.modal {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  max-height: 90vh;
+  min-height: 600px;
+  width: 100%;
+}
+
+.closeButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 1;
+}
+
+.content {
+  padding: var(--rs-unit-x6);
+  overflow-y: auto;
+}
+
+.header {
+  margin-bottom: var(--rs-unit-x6);
+}

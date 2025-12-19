@@ -1,0 +1,84 @@
+.info {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x4);
+}
+
+.header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: var(--rs-unit-x4);
+  flex-wrap: wrap;
+}
+
+.titleSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x2);
+  flex: 1;
+  min-width: 300px;
+}
+
+.title {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 32px;
+  color: var(--rs-color-text-primary);
+  margin: 0;
+}
+
+.meta {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: var(--rs-unit-x4);
+}
+
+.metaItem {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--rs-color-foreground-neutral);
+}
+
+.metaItemClickable {
+  display: flex;
+  align-items: center;
+  gap: var(--rs-unit-x1);
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--rs-color-foreground-neutral);
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  transition: color var(--rs-duration-fast) var(--rs-easing-standard);
+
+  &:hover {
+    color: var(--rs-color-primary);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--rs-color-primary);
+    outline-offset: 2px;
+    border-radius: var(--rs-radius-small);
+  }
+}
+
+.curriculumButton {
+  white-space: nowrap;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .curriculumButton {
+    width: 100%;
+  }
+}

@@ -1,0 +1,15 @@
+@use './tokens';
+@use './themes/uninassau';
+@use './themes/uni7';
+@use './themes/unifael';
+@use './themes/uninorte';
+@use './themes/unama';
+@use './themes/ung';
+@use './themes/grupo-ser';
+
+body {
+  background-color: rgb(
+    from var(--rs-color-background-primary-faded) r g b / 0.3
+  );
+  overflow-x: hidden;
+}

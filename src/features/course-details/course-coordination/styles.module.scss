@@ -1,0 +1,155 @@
+.coordination {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x5);
+}
+
+.tabContent {
+  margin-top: var(--rs-unit-x3);
+}
+
+.pedagogicalContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x5);
+  padding: var(--rs-unit-x4);
+  border: 1px solid var(--rs-color-border-neutral, rgba(0, 0, 0, 0.12));
+  border-radius: var(--rs-radius-large);
+  background: var(--rs-color-background-page);
+}
+
+.section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x3);
+}
+
+.coordinatorContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x5);
+}
+
+.coordinatorCard {
+  display: flex;
+  flex-direction: row;
+  gap: var(--rs-unit-x4);
+  padding: var(--rs-unit-x4);
+  border: 1px solid var(--rs-color-border-neutral);
+  border-radius: var(--rs-radius-large);
+  background: var(--rs-color-background-page);
+}
+
+.coordinatorPhoto {
+  width: 152px;
+  height: 152px;
+  min-width: 152px;
+  border-radius: var(--rs-radius-medium);
+  object-fit: cover;
+  background-color: var(--rs-color-background-neutral-subtle);
+}
+
+.coordinatorPhotoPlaceholder {
+  display: grid;
+  place-items: center;
+  width: 152px;
+  height: 152px;
+  min-width: 152px;
+  border-radius: var(--rs-radius-medium);
+  background-color: var(--rs-color-background-neutral-subtle);
+  color: var(--rs-color-text-primary);
+}
+
+.coordinatorInfo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x3);
+  flex: 1;
+}
+
+.coordinatorName {
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--rs-color-text-primary);
+  margin: 0;
+}
+
+.coordinatorDescription {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--rs-color-foreground-neutral);
+  margin: 0;
+}
+
+.teachersContent {
+  display: flex;
+  flex-direction: column;
+  gap: var(--rs-unit-x3);
+}
+
+.teachersTitle {
+  font-size: 18px;
+  font-weight: 600;
+  line-height: 28px;
+  color: var(--rs-color-text-primary);
+  margin: 0;
+}
+
+.teachersList {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--rs-color-border-neutral, rgba(0, 0, 0, 0.12));
+  border-radius: var(--rs-radius-large);
+  overflow: hidden;
+}
+
+.teacherRow {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: var(--rs-unit-x2);
+  padding: var(--rs-unit-x3);
+  background: var(--rs-color-background-page);
+}
+
+.teacherRow + .teacherRow {
+  border-top: 1px solid var(--rs-color-border-neutral, rgba(0, 0, 0, 0.08));
+}
+
+.teacherName {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 20px;
+  color: var(--rs-color-text-primary);
+  margin: 0 0 var(--rs-unit-x1) 0;
+}
+
+.teacherRole {
+  font-size: 14px;
+  line-height: 20px;
+  color: var(--rs-color-foreground-neutral);
+  margin: 0;
+  text-align: right;
+}
+
+@media (max-width: 768px) {
+  .coordinatorCard {
+    flex-direction: column;
+  }
+
+  .coordinatorPhoto,
+  .coordinatorPhotoPlaceholder {
+    width: 100%;
+    max-width: 152px;
+    align-self: center;
+  }
+
+  .teacherRow {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .teacherRole {
+    text-align: left;
+  }
+}

@@ -1,0 +1,46 @@
+[data-rs-theme*=' unifael '],
+[data-rs-theme='unifael'] {
+  --rs-color-brand: #376232;
+  --rs-color-on-background-primary: oklch(1 0 0);
+  --rs-color-on-brand: oklch(1 0 0);
+}
+
+[data-rs-theme*=' unifael '][data-rs-color-mode='light'],
+[data-rs-theme='unifael'][data-rs-color-mode='light'] {
+  --rs-color-background-primary: #376232;
+  --rs-color-background-primary-faded: #e1e7e0;
+  --rs-color-border-primary: #294a26;
+  --rs-color-border-primary-faded: #c3d0c2;
+  --rs-color-foreground-primary: #698965;
+  --rs-color-rgb-background-primary: 55, 98, 50;
+  --rs-color-rgb-background-primary-faded: 225, 231, 224;
+  --rs-color-text-primary: #376232;
+  --rs-color-background-secondary: #569446;
+  --rs-color-background-secondary-faded: #e5ede3;
+  --rs-color-border-secondary: #3f6d35;
+  --rs-color-border-secondary-faded: #c8dcc4;
+  --rs-color-foreground-secondary: #7fb073;
+  --rs-color-rgb-background-secondary: 86, 148, 70;
+  --rs-color-rgb-background-secondary-faded: 229, 237, 227;
+  --rs-color-text-secondary: #569446;
+}
+
+[data-rs-theme*=' unifael '][data-rs-color-mode='dark'],
+[data-rs-theme='unifael'][data-rs-color-mode='dark'] {
+  --rs-color-background-primary: #32582d;
+  --rs-color-background-primary-faded: #0b140a;
+  --rs-color-border-primary: #87a184;
+  --rs-color-border-primary-faded: #162714;
+  --rs-color-foreground-primary: #9bb098;
+  --rs-color-rgb-background-primary: 50, 88, 45;
+  --rs-color-rgb-background-primary-faded: 11, 20, 10;
+  --rs-color-text-primary: #9bb098;
+  --rs-color-background-secondary: #4d853f;
+  --rs-color-background-secondary-faded: #0f1a0d;
+  --rs-color-border-secondary: #a8c5a0;
+  --rs-color-border-secondary-faded: #1a2b16;
+  --rs-color-foreground-secondary: #b4d4ab;
+  --rs-color-rgb-background-secondary: 77, 133, 63;
+  --rs-color-rgb-background-secondary-faded: 15, 26, 13;
+  --rs-color-text-secondary: #b4d4ab;
+}

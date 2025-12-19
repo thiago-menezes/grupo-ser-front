@@ -1,0 +1,46 @@
+[
+  {
+    "id": 1,
+    "name": "Unidade Aquarius",
+    "institutionId": 1,
+    "address": "Av. Aquarius, 123",
+    "city": "São José dos Campos",
+    "state": "SP",
+    "latitude": -23.1791,
+    "longitude": -45.8872,
+    "active": true
+  },
+  {
+    "id": 2,
+    "name": "Polo Centro",
+    "institutionId": 1,
+    "address": "Rua Centro, 456",
+    "city": "São José dos Campos",
+    "state": "SP",
+    "latitude": -23.1791,
+    "longitude": -45.8872,
+    "active": true
+  },
+  {
+    "id": 3,
+    "name": "Campus Belém",
+    "institutionId": 2,
+    "address": "Av. Alcindo Cacela, 789",
+    "city": "Belém",
+    "state": "PA",
+    "latitude": -1.4558,
+    "longitude": -48.5044,
+    "active": true
+  },
+  {
+    "id": 4,
+    "name": "Campus Guarulhos",
+    "institutionId": 3,
+    "address": "Av. Guarulhos, 100",
+    "city": "Guarulhos",
+    "state": "SP",
+    "latitude": -23.4538,
+    "longitude": -46.5332,
+    "active": true
+  }
+]

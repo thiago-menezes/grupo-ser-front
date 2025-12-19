@@ -1,0 +1,19 @@
+.container {
+  width: 100%;
+  padding: var(--rs-unit-x8) var(--rs-unit-x4);
+  text-align: center;
+}
+
+.icon {
+  color: var(--rs-color-primary);
+}
+
+.description {
+  max-width: 520px;
+}
+
+@media (--rs-viewport-m) {
+  .container {
+    padding: var(--rs-unit-x10) var(--rs-unit-x6);
+  }
+}

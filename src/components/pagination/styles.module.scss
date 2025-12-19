@@ -1,0 +1,24 @@
+.pagination {
+  display: flex;
+  justify-content: center;
+  gap: var(--rs-unit-x1);
+  margin-top: var(--rs-unit-x4);
+  align-items: center;
+}
+
+.paginationDot {
+  padding: 0;
+  width: var(--rs-unit-x2);
+  height: var(--rs-unit-x2);
+  border-radius: 8px;
+  background: var(--rs-color-text-primary);
+  cursor: pointer;
+  transition: background var(--rs-duration-medium) var(--rs-easing-standard);
+  opacity: 0.4;
+  border: 0;
+
+  &.active {
+    width: var(--rs-unit-x6);
+    opacity: 1;
+  }
+}
