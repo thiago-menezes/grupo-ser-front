@@ -1,4 +1,0 @@
-{
-  "installCommand": "corepack enable && corepack prepare yarn@4.9.4 --activate && corepack yarn install",
-  "$schema": "https://openapi.vercel.sh/vercel.json"
-}
