@@ -1,5 +1,6 @@
 {
   "branches": ["main"],
+  "repositoryUrl": "https://github.com/thiago-menezes/grupo-ser-front.git",
   "plugins": [
     [
       "@semantic-release/commit-analyzer",
