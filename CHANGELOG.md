@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.0.1...v1.1.0) (2025-12-20)
+
+
+### Features
+
+* Add ECS task definition and remove npm plugin configuration from release config. ([806b902](https://github.com/thiago-menezes/grupo-ser-front/commit/806b902e8381f3600c0097f190eda193ca842235))
+
 # 1.0.0 (2025-12-19)
 
 
