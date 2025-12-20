@@ -409,7 +409,7 @@ export function QuickSearchForm({
       <div className={styles.filtersContainer}>
         <span className={styles.filtersLabel}>Modalidade:</span>
         <div className={styles.filterOptions}>
-          {['Presencial', 'Semi', 'EAD'].map((modality) => {
+          {['Presencial', 'Semipresencial', 'EAD'].map((modality) => {
             const modalityKey = modality.toLowerCase() as
               | 'presencial'
               | 'semi'
@@ -427,7 +427,7 @@ export function QuickSearchForm({
                     : undefined
                 }
               >
-                {modality === 'Semi' ? 'Semi' : modality}
+                {modality === 'Semipresencial' ? 'Semipresencial' : modality}
               </Checkbox>
             );
           })}
