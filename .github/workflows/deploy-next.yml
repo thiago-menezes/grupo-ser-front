@@ -1,27 +1,19 @@
-name: Deploy Next.js to AWS ECS
+name: Deploy Next.js to AWS
 
 on:
-  # Triggered when semantic-release publishes a GitHub release
-  release:
-    types: [published]
-  # Allow manual trigger
   workflow_dispatch:
     inputs:
       version:
-        description: 'Version to deploy (e.g., 1.0.0)'
-        required: true
+        description: 'Version tag (optional, defaults to commit SHA)'
+        required: false
 
 env:
   AWS_REGION: us-east-1
   ECR_REPOSITORY: grupo-ser/next
-  ECS_SERVICE: next-frontend-service
-  ECS_CLUSTER: grupo-ser-production
-  ECS_TASK_DEFINITION: next-frontend
-  CONTAINER_NAME: next-app
 
 jobs:
   deploy:
-    name: Deploy Next.js to ECS Fargate
+    name: Build & Deploy to EC2
     runs-on: ubuntu-latest
     environment: production
 
@@ -40,83 +32,53 @@ jobs:
         id: login-ecr
         uses: aws-actions/amazon-ecr-login@v2
 
-      - name: Extract version
+      - name: Set image tag
         id: version
         run: |
-          # Get version from release tag or manual input
-          if [ "${{ github.event_name }}" = "release" ]; then
-            VERSION="${{ github.event.release.tag_name }}"
-            VERSION="${VERSION#v}"  # Remove 'v' prefix if present
-          else
+          if [ -n "${{ github.event.inputs.version }}" ]; then
             VERSION="${{ github.event.inputs.version }}"
+          else
+            VERSION="${{ github.sha }}"
           fi
           echo "VERSION=$VERSION" >> $GITHUB_OUTPUT
           echo "Deploying version: $VERSION"
 
-      - name: Build, tag, and push image to Amazon ECR
+      - name: Build and push Docker image
         id: build-image
         env:
           ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
           IMAGE_TAG: ${{ steps.version.outputs.VERSION }}
         run: |
-          # Build Docker image
           docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
-
-          # Tag as latest
           docker tag $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-          # Push both tags to ECR
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
           docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
-
-          # Output image URI for next steps
           echo "image=$ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG" >> $GITHUB_OUTPUT
 
-      - name: Download current ECS task definition
+      - name: Deploy to EC2
+        env:
+          EC2_INSTANCE_ID: ${{ secrets.EC2_INSTANCE_ID }}
         run: |
-          aws ecs describe-task-definition \
-            --task-definition $ECS_TASK_DEFINITION \
-            --query taskDefinition > task-definition-raw.json
+          if [ -z "$EC2_INSTANCE_ID" ]; then
+            echo "⚠️ EC2_INSTANCE_ID not set - skipping deployment"
+            echo "📦 Image pushed to ECR: ${{ steps.build-image.outputs.image }}"
+            echo ""
+            echo "To deploy manually, SSH to your EC2 and run: ./deploy.sh"
+            exit 0
+          fi
 
-          # Remove metadata fields that can't be used when registering a new task definition
-          jq 'del(.taskDefinitionArn, .revision, .status, .requiresAttributes, .compatibilities, .registeredAt, .registeredBy)' \
-            task-definition-raw.json > task-definition.json
+          # Deploy to EC2 using SSM (no SSH key needed)
+          aws ssm send-command \
+            --instance-ids "$EC2_INSTANCE_ID" \
+            --document-name "AWS-RunShellScript" \
+            --parameters 'commands=["/home/ec2-user/deploy.sh"]' \
+            --comment "Deploy Next.js ${{ steps.version.outputs.VERSION }}"
 
-      - name: Fill in new image ID in task definition
-        id: task-def
-        uses: aws-actions/amazon-ecs-render-task-definition@v1
-        with:
-          task-definition: task-definition.json
-          container-name: ${{ env.CONTAINER_NAME }}
-          image: ${{ steps.build-image.outputs.image }}
+          echo "✅ Deployment triggered on EC2 instance: $EC2_INSTANCE_ID"
 
-      - name: Deploy Amazon ECS task definition
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v2
-        with:
-          task-definition: ${{ steps.task-def.outputs.task-definition }}
-          service: ${{ env.ECS_SERVICE }}
-          cluster: ${{ env.ECS_CLUSTER }}
-          wait-for-service-stability: true
-
-      # TODO: Re-enable when CloudFront is configured
-      # - name: Invalidate CloudFront cache
-      #   env:
-      #     CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-      #   if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
-      #   run: |
-      #     aws cloudfront create-invalidation \
-      #       --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
-      #       --paths "/*"
-
-      - name: Notify deployment success
-        if: success()
+      - name: Deployment summary
         run: |
-          echo "✅ Next.js ${{ steps.version.outputs.VERSION }} deployed successfully to ECS!"
-          echo "ECS Service: $ECS_SERVICE"
-          echo "ECR Image: ${{ steps.build-image.outputs.image }}"
-
-      - name: Notify deployment failure
-        if: failure()
-        run: |
-          echo "❌ Deployment failed! Check logs above for details."
-          exit 1
+          echo "============================================"
+          echo "📦 Image: ${{ steps.build-image.outputs.image }}"
+          echo "🏷️  Tag: ${{ steps.version.outputs.VERSION }}"
+          echo "============================================"
