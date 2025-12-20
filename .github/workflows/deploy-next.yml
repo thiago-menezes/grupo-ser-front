@@ -83,14 +83,15 @@ jobs:
           cluster: ${{ env.ECS_CLUSTER }}
           wait-for-service-stability: true
 
-      - name: Invalidate CloudFront cache
-        env:
-          CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
-        if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
-        run: |
-          aws cloudfront create-invalidation \
-            --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
-            --paths "/*"
+      # TODO: Re-enable when CloudFront is configured
+      # - name: Invalidate CloudFront cache
+      #   env:
+      #     CLOUDFRONT_DISTRIBUTION_ID: ${{ secrets.CLOUDFRONT_DISTRIBUTION_ID }}
+      #   if: ${{ env.CLOUDFRONT_DISTRIBUTION_ID != '' }}
+      #   run: |
+      #     aws cloudfront create-invalidation \
+      #       --distribution-id $CLOUDFRONT_DISTRIBUTION_ID \
+      #       --paths "/*"
 
       - name: Notify deployment success
         if: success()
