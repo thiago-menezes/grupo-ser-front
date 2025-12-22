@@ -77,7 +77,8 @@ export async function fetchCourseById(
   courseId: string,
 ): Promise<CourseDetails> {
   const url = buildClientApiUrl(`/cursos/${courseId}`);
-  return clientApiFetch<CourseDetails>(url);
+  const response = await clientApiFetch<{ data: CourseDetails }>(url);
+  return response.data;
 }
 
 export async function fetchCoursesSearch(
