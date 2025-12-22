@@ -1,3 +1,10 @@
+# [1.2.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.1.2...v1.2.0) (2025-12-22)
+
+
+### Features
+
+* Ensure consistent city name capitalization, including prepositions, by applying new logic to URL parsing and city context state. ([caa79a2](https://github.com/thiago-menezes/grupo-ser-front/commit/caa79a2276270417f0eac9fb9a28c34bef3c7931))
+
 ## [1.1.2](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.1.1...v1.1.2) (2025-12-22)
 
 ## [1.1.1](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.1.0...v1.1.1) (2025-12-20)
