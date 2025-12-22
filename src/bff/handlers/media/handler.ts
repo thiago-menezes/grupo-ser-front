@@ -1,15 +1,11 @@
-import type { StrapiClient } from '../../services/strapi';
+import { getStrapiBaseUrl } from '../../services/strapi';
 import type { MediaQueryParams } from './types';
 
-/**
- * Handle media request - fetches media from Strapi
- */
 export async function handleMedia(
-  strapiClient: StrapiClient,
   params: MediaQueryParams,
 ): Promise<{ buffer: ArrayBuffer; contentType: string }> {
   const mediaPath = `/${params.path.join('/')}`;
-  const strapiBaseUrl = strapiClient.getBaseUrl();
+  const strapiBaseUrl = getStrapiBaseUrl();
   const strapiMediaUrl = `${strapiBaseUrl}${mediaPath}`;
 
   const response = await fetch(strapiMediaUrl, {

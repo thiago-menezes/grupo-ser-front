@@ -7,7 +7,7 @@ import type {
   CourseBySkuErrorDTO,
   CourseBySkuResponseDTO,
 } from '@/types/api/course-by-sku';
-import { getStrapiClient } from '../../../services/bff';
+import { ensureBffInitialized } from '../../../services/bff';
 
 export async function GET(
   request: NextRequest,
@@ -17,20 +17,17 @@ export async function GET(
     const { sku } = await params;
     const { searchParams } = new URL(request.url);
 
-    // Extract query params for Client API
     const institution = searchParams.get('institution');
     const state = searchParams.get('state');
     const city = searchParams.get('city');
     const unit = searchParams.get('unit');
     const admissionForm = searchParams.get('admissionForm');
 
-    // Get base course data from Strapi
-    const strapiClient = getStrapiClient();
-    const strapiCourse = await handleCourseDetailsFromStrapi(strapiClient, {
+    ensureBffInitialized();
+    const strapiCourse = await handleCourseDetailsFromStrapi({
       courseSku: sku,
     });
 
-    // If we have all Client API params, enrich with pricing data
     if (institution && state && city && unit) {
       const enrichedCourse = await handleCourseDetailsWithClientApi(
         strapiCourse,
@@ -51,7 +48,6 @@ export async function GET(
       });
     }
 
-    // Return Strapi-only data
     return NextResponse.json<CourseBySkuResponseDTO>(strapiCourse, {
       headers: {
         'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',

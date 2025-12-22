@@ -2,16 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { handleUnits, handleUnitById } from '@/bff/handlers';
 import { transformUnit } from '@/bff/transformers/strapi';
 import type { UnitsErrorDTO, UnitsResponseDTO } from '@/types/api/units';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
-/**
- * GET /api/units
- * Fetch units from Strapi
- *
- * Query params:
- * - institutionSlug: Required
- * - unitId: Optional - if provided, fetches only that specific unit with photos
- */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const institutionSlug = searchParams.get('institutionSlug');
@@ -25,9 +17,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
+    ensureBffInitialized();
 
-    // If unitId is provided, fetch specific unit
     let strapiData;
     if (unitIdParam) {
       const unitId = parseInt(unitIdParam, 10);
@@ -37,16 +28,14 @@ export async function GET(request: NextRequest) {
           { status: 400 },
         );
       }
-      strapiData = await handleUnitById(strapiClient, {
+      strapiData = await handleUnitById({
         institutionSlug,
         unitId,
       });
     } else {
-      // Fetch all units for institution
-      strapiData = await handleUnits(strapiClient, { institutionSlug });
+      strapiData = await handleUnits({ institutionSlug });
     }
 
-    // Transform Portuguese field names to English DTOs
     const transformedData: UnitsResponseDTO = {
       data: strapiData.data.map(transformUnit),
       meta: strapiData.meta,

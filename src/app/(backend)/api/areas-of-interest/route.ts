@@ -9,11 +9,8 @@ import type {
   AreasOfInterestResponseDTO,
 } from '@/types/api/areas-of-interest';
 import { slugify } from '@/utils';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
-/**
- * Helper function to extract course names from Strapi rich text blocks
- */
 function extractCoursesFromRichText(subareas: StrapiRichTextBlock[]): string[] {
   if (!subareas || !Array.isArray(subareas)) {
     return [];
@@ -28,9 +25,6 @@ function extractCoursesFromRichText(subareas: StrapiRichTextBlock[]): string[] {
     );
 }
 
-/**
- * Transform a single Strapi area to DTO format
- */
 function transformAreaToDTO(area: StrapiAreaInteresse) {
   const courseNames = extractCoursesFromRichText(area.subareas || []);
 
@@ -61,13 +55,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
-    const strapiData = await handleAreasInteresse(strapiClient, {
+    ensureBffInitialized();
+    const strapiData = await handleAreasInteresse({
       institutionSlug,
       noCache,
     });
 
-    // Transform Strapi response to expected DTO format
     const transformedData: AreasOfInterestResponseDTO = {
       data: strapiData.data.map(transformAreaToDTO),
       meta: strapiData.meta,

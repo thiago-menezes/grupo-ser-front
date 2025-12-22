@@ -10,7 +10,7 @@
     "lint": "eslint . --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:fix": "eslint . --fix --cache --cache-location ./node_modules/.cache/eslint/",
     "lint:styles": "tsx src/scripts/check-unused-styles.ts",
-    "format": "prettier --write . && yarn lint:fix",
+    "format": "prettier --write . && npm run lint:fix",
     "clean": "rm -rf .next node_modules/.cache"
   },
   "dependencies": {

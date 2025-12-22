@@ -1,19 +1,14 @@
-import type { StrapiClient } from '../../services/strapi';
+import { strapiFetch } from '../../services/strapi';
 import type {
   StrapiUnitsResponse,
-  UnitsQueryParams,
+  StrapiUnitsQueryParams,
   UnitByIdQueryParams,
 } from './types';
 
-/**
- * Handle units request
- */
 export async function handleUnits(
-  strapiClient: StrapiClient,
-  params: UnitsQueryParams,
+  params: StrapiUnitsQueryParams,
 ): Promise<StrapiUnitsResponse> {
-  // First, verify the institution exists
-  const institutionCheck = await strapiClient.fetch<{
+  const institutionCheck = await strapiFetch<{
     data: Array<{ id: number; slug: string; nome: string }>;
   }>('institutions', {
     filters: {
@@ -23,12 +18,11 @@ export async function handleUnits(
 
   if (!institutionCheck.data || institutionCheck.data.length === 0) {
     throw new Error(
-      `Institution with slug "${params.institutionSlug}" not found. Available institutions can be checked at: http://localhost:1337/admin/content-manager/collectionType/api::institution/institution`,
+      `Institution with slug "${params.institutionSlug}" not found.`,
     );
   }
 
-  // Fetch units with institution filter (using Portuguese field names)
-  const units = await strapiClient.fetch<StrapiUnitsResponse>('units', {
+  const units = await strapiFetch<StrapiUnitsResponse>('units', {
     filters: {
       instituicao: {
         slug: { $eq: params.institutionSlug },
@@ -39,23 +33,17 @@ export async function handleUnits(
 
   if (!units.data || units.data.length === 0) {
     throw new Error(
-      `No units found for institution "${params.institutionSlug}". Units can be managed at: http://localhost:1337/admin/content-manager/collectionType/api::unit/unit`,
+      `No units found for institution "${params.institutionSlug}".`,
     );
   }
 
   return units;
 }
 
-/**
- * Handle unit request by ID - fetch specific unit with photos
- * Uses id_unidade field to match with client API ID
- */
 export async function handleUnitById(
-  strapiClient: StrapiClient,
   params: UnitByIdQueryParams,
 ): Promise<StrapiUnitsResponse> {
-  // Fetch specific unit by id_unidade (matches client API ID) and institution
-  const units = await strapiClient.fetch<StrapiUnitsResponse>('units', {
+  const units = await strapiFetch<StrapiUnitsResponse>('units', {
     filters: {
       id_unidade: { $eq: params.unitId },
       instituicao: {

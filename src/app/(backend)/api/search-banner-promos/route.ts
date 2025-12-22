@@ -4,7 +4,7 @@ import type {
   SearchBannerPromosErrorDTO,
   SearchBannerPromosResponseDTO,
 } from '@/types/api/search-banner-promos';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -19,8 +19,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
-    const strapiData = await handleSearchBannerPromo(strapiClient, {
+    ensureBffInitialized();
+    const strapiData = await handleSearchBannerPromo({
       institutionSlug,
       noCache,
     });

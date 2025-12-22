@@ -1,16 +1,10 @@
-import type { ClientApiClient } from '../../services/client-api';
 import { transformClientUnits } from '../../transformers/client-api';
+import { fetchUnits } from './api';
 import type { ClientUnitsQueryParams, ClientUnitsResponse } from './types';
 
-/**
- * Handle units request from client API
- * Fetches units by geographic location (institution, state, city)
- */
 export async function handleClientUnits(
-  clientApiClient: ClientApiClient,
   params: ClientUnitsQueryParams,
 ): Promise<ClientUnitsResponse> {
-  // Validate required parameters
   if (!params.institution) {
     throw new Error('Institution is required');
   }
@@ -22,14 +16,12 @@ export async function handleClientUnits(
   }
 
   try {
-    // Fetch from client API
-    const apiResponse = await clientApiClient.fetchUnits(
+    const apiResponse = await fetchUnits(
       params.institution,
       params.state,
       params.city,
     );
 
-    // Handle empty response
     if (!apiResponse.Unidades || apiResponse.Unidades.length === 0) {
       return {
         data: [],
@@ -42,7 +34,6 @@ export async function handleClientUnits(
       };
     }
 
-    // Transform Portuguese fields to English
     const transformedUnits = transformClientUnits(apiResponse.Unidades);
 
     return {

@@ -1,24 +1,27 @@
-export interface AutocompleteQueryParams {
+export type AutocompleteQueryParams = {
   type: 'cities' | 'courses';
   q?: string;
-}
+  marca?: string;
+  estado?: string;
+  cidade?: string;
+  modalidade?: string;
+};
+
+export type CityAutocompleteResult = {
+  label: string;
+  value: string;
+  city: string;
+  state: string;
+};
+
+export type CourseAutocompleteResult = {
+  label: string;
+  value: string;
+  modalidade: string;
+  periodo: string;
+};
 
 export type AutocompleteResponse = {
   type: 'cities' | 'courses';
-  results: Array<
-    | {
-        label: string;
-        value: string;
-        city: string;
-        state: string;
-      }
-    | {
-        id: number;
-        label: string;
-        value: string;
-        slug: string;
-        level: string;
-        type: string;
-      }
-  >;
+  results: Array<CityAutocompleteResult | CourseAutocompleteResult>;
 };

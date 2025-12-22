@@ -1,32 +1,37 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  handleAutocomplete,
-  parseAutocompleteQueryParams,
-} from '@/bff/handlers';
-import { BffValidationError } from '@/bff/utils/errors';
-import type {
-  CoursesAutocompleteErrorDTO,
-  CoursesAutocompleteResponseDTO,
-} from '@/types/api/courses-autocomplete';
+import { handleCoursesAutocomplete } from '@/bff/handlers/courses/courses-autocomplete';
+import { ensureBffInitialized } from '../../services/bff';
+
+export type CoursesAutocompleteErrorDTO = {
+  error: string;
+  message?: string;
+};
 
 export async function GET(request: NextRequest) {
   try {
-    const params = parseAutocompleteQueryParams(request.nextUrl.searchParams);
-    const response = await handleAutocomplete(params);
-    return NextResponse.json<CoursesAutocompleteResponseDTO>(response);
-  } catch (error) {
-    if (error instanceof BffValidationError) {
-      return NextResponse.json(
-        {
-          error: error.message,
-        },
-        { status: error.statusCode },
-      );
-    }
+    const searchParams = request.nextUrl.searchParams;
+    const marca = searchParams.get('marca') || undefined;
+    const estado = searchParams.get('estado') || undefined;
+    const cidade = searchParams.get('cidade') || undefined;
+    const modalidade = searchParams.get('modalidade') || undefined;
 
+    ensureBffInitialized();
+    const response = await handleCoursesAutocomplete({
+      marca,
+      estado,
+      cidade,
+      modalidade,
+    });
+
+    return NextResponse.json(response, {
+      headers: {
+        'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=3600',
+      },
+    });
+  } catch (error) {
     return NextResponse.json<CoursesAutocompleteErrorDTO>(
       {
-        error: 'Failed to fetch autocomplete results',
+        error: 'Failed to fetch courses autocomplete',
         message: error instanceof Error ? error.message : 'Unknown error',
       },
       { status: 500 },

@@ -17,8 +17,7 @@ export async function GET() {
       version: process.env.npm_package_version || 'unknown',
       services: {
         strapi: await checkStrapi(),
-        coursesApi: await checkCoursesApi(),
-        clientApi: await checkClientApi(),
+        api: await checkApi(),
       },
     };
 
@@ -84,46 +83,12 @@ async function checkStrapi() {
 }
 
 /**
- * Check Courses API availability
+ * Check centralized API availability (replaces separate coursesApi and clientApi checks)
  */
-async function checkCoursesApi() {
-  try {
-    const apiUrl = process.env.COURSES_API_BASE_URL;
-    if (!apiUrl) {
-      return {
-        status: 'warning',
-        message: 'COURSES_API_BASE_URL not configured',
-      };
-    }
-
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 3000);
-
-    const response = await fetch(apiUrl, {
-      method: 'HEAD',
-      signal: controller.signal,
-    });
-
-    clearTimeout(timeoutId);
-
-    return {
-      status: response.ok ? 'ok' : 'error',
-      statusCode: response.status,
-    };
-  } catch (error) {
-    return {
-      status: 'error',
-      message: error instanceof Error ? error.message : 'Unknown error',
-    };
-  }
-}
-
-/**
- * Check Client API availability
- */
-async function checkClientApi() {
+async function checkApi() {
   try {
     const apiUrl = process.env.API_BASE_URL;
+    const apiKey = process.env.API_KEY;
     if (!apiUrl) {
       return { status: 'warning', message: 'API_BASE_URL not configured' };
     }
@@ -133,6 +98,9 @@ async function checkClientApi() {
 
     const response = await fetch(apiUrl, {
       method: 'HEAD',
+      headers: {
+        ...(apiKey && { 'x-api-key': apiKey }),
+      },
       signal: controller.signal,
     });
 

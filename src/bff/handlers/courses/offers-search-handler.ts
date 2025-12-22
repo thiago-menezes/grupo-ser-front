@@ -4,41 +4,25 @@ import type {
   CourseCard,
   FiltersCount,
 } from 'types/api/courses-search';
-import type { CoursesApiClient } from '../../services/courses-api/client';
-import type { JSONServerQueryParams } from '../../services/courses-api/types';
-import { transformCoursesToCards } from '../../transformers/courses-search';
-import { aggregateCourses } from './aggregator';
+import { transformOffersToCards } from '../../transformers/offers';
+import { fetchOffers, OffersParams } from '../offers';
 
 const DEFAULT_PER_PAGE = 12;
 
-function mapLevelToJSONServer(level?: string): string | undefined {
-  if (!level) return undefined;
-
-  if (level === 'undergraduate') return 'Ensino Superior';
-  if (level === 'graduate') return 'Pós-Graduação';
-
-  return undefined;
-}
-
-function mapModalityToJSONServer(modality: string): string {
+function mapModalityToApi(modality: string): string {
   const lower = modality.toLowerCase();
-
-  if (lower === 'inperson' || lower === 'presencial') return 'Presencial';
-  if (lower === 'online' || lower === 'ead') return 'EAD';
-  if (lower === 'hybrid' || lower === 'semipresencial') return 'Semipresencial';
-
+  if (lower === 'inperson' || lower === 'presencial') return 'presencial';
+  if (lower === 'hybrid' || lower === 'semipresencial') return 'semipresencial';
+  if (lower === 'online' || lower === 'ead') return 'ead';
   return modality;
 }
 
-function mapShiftToJSONServer(shift: string): string {
+function mapShiftToApi(shift: string): string {
   const lower = shift.toLowerCase();
-
-  if (lower === 'morning') return 'Matutino';
-  if (lower === 'afternoon') return 'Vespertino';
-  if (lower === 'evening') return 'Noturno';
-  if (lower === 'fulltime') return 'Integral';
-  if (lower === 'virtual') return 'Virtual';
-
+  if (lower === 'morning' || lower === 'manha') return 'matutino';
+  if (lower === 'afternoon' || lower === 'tarde') return 'vespertino';
+  if (lower === 'evening' || lower === 'noturno') return 'noturno';
+  if (lower === 'fulltime' || lower === 'integral') return 'integral';
   return shift;
 }
 
@@ -82,12 +66,25 @@ function applyClientSideFilters(
         const lower = courseShift.toLowerCase();
         return params.shifts!.some((filterShift) => {
           const filterLower = filterShift.toLowerCase();
-          if (filterLower === 'manha' && lower.includes('manhã')) return true;
-          if (filterLower === 'tarde' && lower.includes('tarde')) return true;
-          if (filterLower === 'noturno' && lower.includes('noite')) return true;
-          if (filterLower === 'integral' && lower.includes('integral'))
+          if (
+            (filterLower === 'manha' || filterLower === 'morning') &&
+            (lower.includes('mat') || lower.includes('manhã'))
+          )
             return true;
-          if (filterLower === 'virtual' && lower.includes('virtual'))
+          if (
+            (filterLower === 'tarde' || filterLower === 'afternoon') &&
+            (lower.includes('vesp') || lower.includes('tarde'))
+          )
+            return true;
+          if (
+            (filterLower === 'noturno' || filterLower === 'evening') &&
+            (lower.includes('not') || lower.includes('noite'))
+          )
+            return true;
+          if (
+            (filterLower === 'integral' || filterLower === 'fulltime') &&
+            lower.includes('int')
+          )
             return true;
           return false;
         });
@@ -173,40 +170,36 @@ function calculateFiltersCount(courses: CourseCard[]): FiltersCount {
   return filtersCount;
 }
 
-export async function handleCoursesSearch(
-  coursesApiClient: CoursesApiClient,
+export async function handleOffersSearch(
   params: CoursesSearchParams,
+  marca: string,
 ): Promise<CoursesSearchResponse> {
   const { page = 1, perPage = DEFAULT_PER_PAGE } = params;
 
-  const apiParams: JSONServerQueryParams = {
-    Nivel_Ensino: mapLevelToJSONServer(params.level),
-    Cidade: params.city,
-    Estado: params.state,
-    Curso_Nome_like: params.course,
+  const apiParams: OffersParams = {
+    marca,
+    estado: params.state,
+    cidade: params.city,
+    precoMin: params.minPrice,
+    precoMax: params.maxPrice,
+    modalidades:
+      params.modalities?.length === 1
+        ? mapModalityToApi(params.modalities[0])
+        : undefined,
+    turnos:
+      params.shifts?.length === 1 ? mapShiftToApi(params.shifts[0]) : undefined,
+    page: 1,
+    limit: 1000,
   };
 
-  if (params.modalities && params.modalities.length === 1) {
-    apiParams.Modalidade = mapModalityToJSONServer(params.modalities[0]);
-  }
+  const response = await fetchOffers(apiParams);
 
-  if (params.shifts && params.shifts.length === 1) {
-    apiParams.Turno_Nome = mapShiftToJSONServer(params.shifts[0]);
-  }
-
-  if (params.minPrice !== undefined) {
-    apiParams.Valor_gte = params.minPrice;
-  }
-
-  if (params.maxPrice !== undefined) {
-    apiParams.Valor_lte = params.maxPrice;
-  }
-
-  const rawCourses = await coursesApiClient.fetchCourses(apiParams);
-
-  const coursesAggregated = aggregateCourses(rawCourses);
-
-  let courses = transformCoursesToCards(coursesAggregated);
+  let courses = transformOffersToCards(
+    response.data || [],
+    marca,
+    params.city || '',
+    params.state || '',
+  );
 
   courses = applyClientSideFilters(courses, params);
 

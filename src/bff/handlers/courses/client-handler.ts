@@ -1,14 +1,7 @@
-/**
- * Client API Courses Handler
- * Orchestrates units + courses fetching with proper error handling
- */
-
 import type { CoursesResponse, CourseData } from 'types/api/courses';
-import type {
-  ClientApiClient,
-  ClientApiCourseDetails,
-} from '../../services/client-api';
 import { transformClientCourse } from '../../transformers/client-api';
+import { fetchUnits } from '../units/api';
+import { fetchCoursesByUnit, fetchCourseDetails, CourseDetails } from './api';
 
 const DEFAULT_PER_PAGE = 12;
 const DURATION_RANGES = {
@@ -31,11 +24,7 @@ export type CityCoursesParams = {
   perPage?: number;
 };
 
-/**
- * Fetch all courses for a city by fetching units first, then courses for each unit
- */
 export async function fetchCityCourses(
-  clientApi: ClientApiClient,
   params: CityCoursesParams,
 ): Promise<CoursesResponse> {
   const {
@@ -47,12 +36,7 @@ export async function fetchCityCourses(
   } = params;
 
   try {
-    // Step 1: Fetch units for the city
-    const unitsResponse = await clientApi.fetchUnits(
-      institution,
-      estado,
-      cidade,
-    );
+    const unitsResponse = await fetchUnits(institution, estado, cidade);
 
     if (!unitsResponse.Unidades || unitsResponse.Unidades.length === 0) {
       return {
@@ -64,10 +48,8 @@ export async function fetchCityCourses(
       };
     }
 
-    // Step 2: Fetch courses for all units in parallel
     const coursePromises = unitsResponse.Unidades.map((unit) =>
-      clientApi
-        .fetchCoursesByUnit(institution, estado, cidade, unit.ID)
+      fetchCoursesByUnit(institution, estado, cidade, unit.ID)
         .then((coursesResponse) => ({
           unit,
           courses: coursesResponse.Cursos || [],
@@ -80,7 +62,6 @@ export async function fetchCityCourses(
 
     const coursesResults = await Promise.all(coursePromises);
 
-    // Step 3: Flatten all courses and transform them
     const allCoursesWithUnits = coursesResults.flatMap(({ unit, courses }) =>
       courses.map((course) => ({ course, unit })),
     );
@@ -89,19 +70,15 @@ export async function fetchCityCourses(
       ({ course, unit }) => transformClientCourse(course, unit),
     );
 
-    // Step 4: Apply filters
     transformedCourses = applyFilters(transformedCourses, params);
 
-    // Step 5: Apply pagination
     const total = transformedCourses.length;
     const totalPages = Math.ceil(total / perPage);
     const startIndex = (page - 1) * perPage;
     const endIndex = startIndex + perPage;
     const paginatedCourses = transformedCourses.slice(startIndex, endIndex);
 
-    // Step 6: Fetch pricing details for paginated courses in parallel
     const coursesWithPrices = await enrichCoursesWithPrices(
-      clientApi,
       paginatedCourses,
       institution,
       estado,
@@ -121,27 +98,20 @@ export async function fetchCityCourses(
   }
 }
 
-/**
- * Enrich courses with pricing information from course details endpoint
- * Fetches pricing for paginated courses only (e.g., 12 courses per page)
- */
 async function enrichCoursesWithPrices(
-  clientApi: ClientApiClient,
   courses: CourseData[],
   institution: string,
   estado: string,
   cidade: string,
 ): Promise<CourseData[]> {
-  // Fetch course details in parallel for all paginated courses
   const pricePromises = courses.map(async (course) => {
     try {
-      // Only fetch if we have the required data
       if (!course.sku || !course.unitId) {
         console.warn(`Missing SKU or unitId for course: ${course.title}`);
         return course;
       }
 
-      const details = await clientApi.fetchCourseDetails(
+      const details = await fetchCourseDetails(
         institution,
         estado,
         cidade,
@@ -149,7 +119,6 @@ async function enrichCoursesWithPrices(
         course.sku,
       );
 
-      // Extract the lowest price from all available options
       const price = extractLowestPrice(details);
 
       if (price !== null) {
@@ -162,20 +131,16 @@ async function enrichCoursesWithPrices(
       return course;
     } catch (error) {
       console.error(`Failed to fetch pricing for course ${course.sku}:`, error);
-      return course; // Return course without pricing on error
+      return course;
     }
   });
 
   return Promise.all(pricePromises);
 }
 
-/**
- * Extract the lowest mensalidade price from course details
- */
-function extractLowestPrice(details: ClientApiCourseDetails): number | null {
+function extractLowestPrice(details: CourseDetails): number | null {
   let lowestPrice: number | null = null;
 
-  // Iterate through all turnos, formas de ingresso, tipos de pagamento, and valores
   for (const turno of details.Turnos || []) {
     for (const forma of turno.FormasIngresso || []) {
       for (const tipoPagamento of forma.TiposPagamento || []) {
@@ -194,16 +159,12 @@ function extractLowestPrice(details: ClientApiCourseDetails): number | null {
   return lowestPrice;
 }
 
-/**
- * Apply filters to courses
- */
 function applyFilters(
   courses: CourseData[],
   params: CityCoursesParams,
 ): CourseData[] {
   let filtered = courses;
 
-  // Filter by modality
   if (params.modalities && params.modalities.length > 0) {
     filtered = filtered.filter((course) =>
       course.modalities.some((modality) =>
@@ -212,7 +173,6 @@ function applyFilters(
     );
   }
 
-  // Filter by course name (case-insensitive search)
   if (params.courseName) {
     const searchTerm = params.courseName.toLowerCase();
     filtered = filtered.filter((course) =>
@@ -220,10 +180,8 @@ function applyFilters(
     );
   }
 
-  // Filter by duration
   if (params.durations && params.durations.length > 0) {
     filtered = filtered.filter((course) => {
-      // Extract years from duration string
       const match = course.duration.match(/(\d+)\s+anos?/);
       if (!match) return false;
 
@@ -245,9 +203,6 @@ function applyFilters(
       });
     });
   }
-
-  // Note: Shift filtering is not implemented as the Client API doesn't provide shift information
-  // This would require additional API data or mapping
 
   return filtered;
 }

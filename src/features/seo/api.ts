@@ -1,4 +1,4 @@
-import { createStrapiClient } from '@/bff/services/strapi';
+import { initStrapi, strapiFetch } from '@/bff/services/strapi';
 import type { StrapiSeoResponse } from './types';
 
 function getStrapiUrl(): string {
@@ -15,9 +15,10 @@ export async function getSeoFromStrapi(
   try {
     const strapiUrl = getStrapiUrl();
     const strapiToken = process.env.STRAPI_TOKEN;
-    const strapiClient = createStrapiClient(strapiUrl, strapiToken);
 
-    const strapiResponse = await strapiClient.fetch<StrapiSeoResponse>('seos', {
+    initStrapi({ baseUrl: strapiUrl, token: strapiToken });
+
+    const strapiResponse = await strapiFetch<StrapiSeoResponse>('seos', {
       filters: {
         instituicao: {
           slug: { $eq: institutionSlug },

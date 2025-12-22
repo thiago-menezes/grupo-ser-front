@@ -1,14 +1,10 @@
-import type { StrapiClient } from '../../services/strapi';
+import { strapiFetch } from '../../services/strapi';
 import type { EMecQueryParams, StrapiEMecResponse } from './types';
 
-/**
- * Handle e-MEC data request
- */
 export async function handleEMec(
-  strapiClient: StrapiClient,
   params: EMecQueryParams,
 ): Promise<StrapiEMecResponse> {
-  const data = await strapiClient.fetch<StrapiEMecResponse>(
+  const data = await strapiFetch<StrapiEMecResponse>(
     'e-mecs',
     {
       filters: {

@@ -1,30 +1,31 @@
-/**
- * Strapi service client
- * Framework-agnostic service for fetching data from Strapi CMS
- */
-
 export type PopulateOption = string | string[] | Record<string, PopulateValue>;
 
 export type PopulateValue = string | boolean | { populate?: PopulateOption };
 
-export interface StrapiFetchOptions {
+export type StrapiFetchOptions = {
   filters?: Record<string, unknown>;
   populate?: PopulateOption;
   sort?: string | string[];
   params?: Record<string, unknown>;
-}
+};
 
-export interface StrapiClientConfig {
+export type StrapiConfig = {
   baseUrl: string;
-  cacheRevalidate?: number;
   token?: string;
   timeout?: number;
+};
+
+let config: StrapiConfig | null = null;
+
+export function initStrapi(cfg: StrapiConfig): void {
+  config = cfg;
 }
 
-/**
- * Build nested filter query string for Strapi
- * Handles deeply nested filters like filters[institution][slug][$eq]=value
- */
+export function getConfig(): StrapiConfig {
+  if (!config) throw new Error('Strapi not initialized');
+  return config;
+}
+
 function buildNestedFilter(
   prefix: string,
   filters: Record<string, unknown>,
@@ -37,25 +38,19 @@ function buildNestedFilter(
     if (typeof value === 'object' && value !== null && !Array.isArray(value)) {
       const valueObj = value as Record<string, unknown>;
       const keys = Object.keys(valueObj);
-
-      // Check if ALL keys are operators (start with $)
       const allOperators =
         keys.length > 0 && keys.every((k) => k.startsWith('$'));
 
       if (allOperators) {
-        // This is a leaf object with operators, build the full path
         Object.entries(valueObj).forEach(([opKey, opValue]) => {
           parts.push(
             `${fullKey}[${opKey}]=${encodeURIComponent(String(opValue))}`,
           );
         });
       } else {
-        // This is a nested object, recursively process it
-        const nestedParts = buildNestedFilter(fullKey, valueObj);
-        parts.push(...nestedParts);
+        parts.push(...buildNestedFilter(fullKey, valueObj));
       }
     } else {
-      // Handle primitive values
       parts.push(`${fullKey}=${encodeURIComponent(String(value))}`);
     }
   });
@@ -63,152 +58,118 @@ function buildNestedFilter(
   return parts;
 }
 
-/**
- * Strapi API client
- */
-export class StrapiClient {
-  private config: StrapiClientConfig;
+function buildPopulate(
+  obj: Record<string, unknown>,
+  prefix = 'populate',
+): string[] {
+  const parts: string[] = [];
 
-  constructor(config: StrapiClientConfig) {
-    this.config = config;
+  Object.entries(obj).forEach(([key, value]) => {
+    if (typeof value === 'string' || typeof value === 'boolean') {
+      parts.push(`${prefix}[${key}]=${value}`);
+    } else if (
+      typeof value === 'object' &&
+      value !== null &&
+      'populate' in value
+    ) {
+      parts.push(`${prefix}[${key}][populate]=true`);
+      if (
+        typeof value.populate === 'object' &&
+        !Array.isArray(value.populate)
+      ) {
+        parts.push(
+          ...buildPopulate(
+            value.populate as Record<string, unknown>,
+            `${prefix}[${key}][populate]`,
+          ),
+        );
+      }
+    }
+  });
+
+  return parts;
+}
+
+function buildQuery(options?: StrapiFetchOptions): string {
+  const parts: string[] = [];
+
+  if (options?.filters) {
+    parts.push(...buildNestedFilter('filters', options.filters));
   }
 
-  /**
-   * Fetch data from Strapi API
-   */
-  async fetch<T>(
-    endpoint: string,
-    options?: StrapiFetchOptions,
-    noCache?: boolean,
-  ): Promise<T> {
-    const queryParts: string[] = [];
-
-    // Add filters with proper nested bracket notation
-    if (options?.filters) {
-      const filterParts = buildNestedFilter('filters', options.filters);
-      queryParts.push(...filterParts);
-    }
-
-    // Add populate
-    if (options?.populate) {
-      if (typeof options.populate === 'string') {
-        queryParts.push(`populate=${options.populate}`);
-      } else if (Array.isArray(options.populate)) {
-        options.populate.forEach((field, index) => {
-          queryParts.push(`populate[${index}]=${field}`);
-        });
-      } else if (typeof options.populate === 'object') {
-        // Build nested populate recursively
-        const buildPopulate = (
-          obj: Record<string, unknown>,
-          prefix = 'populate',
-        ) => {
-          Object.entries(obj).forEach(([key, value]) => {
-            if (typeof value === 'string' || typeof value === 'boolean') {
-              queryParts.push(`${prefix}[${key}]=${value}`);
-            } else if (
-              typeof value === 'object' &&
-              value !== null &&
-              'populate' in value
-            ) {
-              // Nested populate
-              queryParts.push(`${prefix}[${key}][populate]=true`);
-              if (
-                typeof value.populate === 'object' &&
-                !Array.isArray(value.populate)
-              ) {
-                buildPopulate(
-                  value.populate as Record<string, unknown>,
-                  `${prefix}[${key}][populate]`,
-                );
-              }
-            }
-          });
-        };
-        buildPopulate(options.populate as Record<string, unknown>);
-      }
-    }
-
-    // Add sort
-    if (options?.sort) {
-      if (Array.isArray(options.sort)) {
-        options.sort.forEach((field, index) => {
-          queryParts.push(`sort[${index}]=${field}`);
-        });
-      } else {
-        queryParts.push(`sort=${options.sort}`);
-      }
-    }
-
-    // Add other params
-    if (options?.params) {
-      Object.entries(options.params).forEach(([key, value]) => {
-        queryParts.push(`${key}=${encodeURIComponent(String(value))}`);
+  if (options?.populate) {
+    if (typeof options.populate === 'string') {
+      parts.push(`populate=${options.populate}`);
+    } else if (Array.isArray(options.populate)) {
+      options.populate.forEach((field, index) => {
+        parts.push(`populate[${index}]=${field}`);
       });
-    }
-
-    const queryString = queryParts.length > 0 ? `?${queryParts.join('&')}` : '';
-    const url = `${this.config.baseUrl}/api/${endpoint}${queryString}`;
-
-    // Create AbortController for timeout
-    const controller = new AbortController();
-    const timeout = this.config.timeout || 10000; // Default 10 seconds
-    const timeoutId = setTimeout(() => controller.abort(), timeout);
-
-    try {
-      const response = await fetch(url, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          ...(this.config.token
-            ? { Authorization: `Bearer ${this.config.token}` }
-            : {}),
-          ...(noCache ? { 'Cache-Control': 'no-cache' } : {}),
-        },
-        signal: controller.signal,
-      });
-
-      clearTimeout(timeoutId);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        throw new Error(
-          `Strapi API request failed: ${response.status} ${response.statusText}. ${errorText}`,
-        );
-      }
-
-      return response.json() as Promise<T>;
-    } catch (error) {
-      clearTimeout(timeoutId);
-      if (error instanceof Error && error.name === 'AbortError') {
-        throw new Error(
-          `Strapi API request timeout after ${timeout}ms: ${url}`,
-        );
-      }
-      throw error;
+    } else if (typeof options.populate === 'object') {
+      parts.push(...buildPopulate(options.populate as Record<string, unknown>));
     }
   }
 
-  /**
-   * Get Strapi base URL
-   */
-  getBaseUrl(): string {
-    return this.config.baseUrl;
+  if (options?.sort) {
+    if (Array.isArray(options.sort)) {
+      options.sort.forEach((field, index) => {
+        parts.push(`sort[${index}]=${field}`);
+      });
+    } else {
+      parts.push(`sort=${options.sort}`);
+    }
+  }
+
+  if (options?.params) {
+    Object.entries(options.params).forEach(([key, value]) => {
+      parts.push(`${key}=${encodeURIComponent(String(value))}`);
+    });
+  }
+
+  return parts.length > 0 ? `?${parts.join('&')}` : '';
+}
+
+export async function strapiFetch<T>(
+  endpoint: string,
+  options?: StrapiFetchOptions,
+  noCache?: boolean,
+): Promise<T> {
+  const { baseUrl, token, timeout = 10000 } = getConfig();
+  const query = buildQuery(options);
+  const url = `${baseUrl}/api/${endpoint}${query}`;
+
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), timeout);
+
+  try {
+    const response = await fetch(url, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json',
+        ...(token && { Authorization: `Bearer ${token}` }),
+        ...(noCache && { 'Cache-Control': 'no-cache' }),
+      },
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      throw new Error(
+        `Strapi error: ${response.status} ${response.statusText}. ${errorText}`,
+      );
+    }
+
+    return response.json() as Promise<T>;
+  } catch (error) {
+    clearTimeout(timeoutId);
+    if (error instanceof Error && error.name === 'AbortError') {
+      throw new Error(`Strapi timeout after ${timeout}ms: ${url}`);
+    }
+    throw error;
   }
 }
 
-/**
- * Create a Strapi client instance
- */
-export function createStrapiClient(
-  baseUrl: string,
-  token?: string,
-  timeout = 10000,
-): StrapiClient {
-  return new StrapiClient({
-    baseUrl,
-    cacheRevalidate: 3600,
-    token,
-    timeout,
-  });
+export function getStrapiBaseUrl(): string {
+  return getConfig().baseUrl;
 }

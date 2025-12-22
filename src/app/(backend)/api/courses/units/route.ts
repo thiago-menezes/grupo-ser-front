@@ -1,21 +1,12 @@
 import { NextRequest, NextResponse } from 'next/server';
+import { fetchUnitsByCourse } from '@/bff/handlers/units/api';
 import { transformClientUnits } from '@/bff/transformers/client-api';
 import type {
   CoursesUnitsErrorDTO,
   CoursesUnitsResponseDTO,
 } from '@/types/api/courses-units';
-import { getClientApiClient } from '../../services/bff';
+import { ensureBffInitialized } from '../../services/bff';
 
-/**
- * GET /api/courses/units
- * Fetch units available for a specific course
- *
- * Query params:
- * - institution: Institution slug (e.g., "unama")
- * - state: State abbreviation (e.g., "pa")
- * - city: City name (e.g., "ananindeua")
- * - courseId: Course ID (Client API Course_ID)
- */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const institution = searchParams.get('institution');
@@ -31,8 +22,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const clientApiClient = getClientApiClient();
-    const apiResponse = await clientApiClient.fetchUnitsByCourse(
+    ensureBffInitialized();
+    const apiResponse = await fetchUnitsByCourse(
       institution,
       state,
       city,

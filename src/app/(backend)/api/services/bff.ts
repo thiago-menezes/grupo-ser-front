@@ -1,40 +1,43 @@
-/**
- * BFF service initialization
- * Creates and configures BFF clients for use in Next.js API routes
- */
-
-import { createClientApiClient } from '@/bff/services/client-api';
-import { createStrapiClient } from '@/bff/services/strapi';
+import { initClientApi } from '@/bff/services/client-api';
+import { initStrapi } from '@/bff/services/strapi';
 
 const STRAPI_URL = process.env.STRAPI_URL || process.env.NEXT_PUBLIC_STRAPI_URL;
 const STRAPI_TOKEN = process.env.STRAPI_TOKEN;
 const CLIENT_API_BASE_URL = process.env.API_BASE_URL;
+const CLIENT_API_KEY = process.env.API_KEY;
 
-/**
- * Get Strapi client instance
- */
-export function getStrapiClient() {
+let initialized = false;
+
+export function initBff(): void {
+  if (initialized) return;
+
   if (!STRAPI_URL) {
     console.error('STRAPI_URL environment variable is not configured');
-    console.log('Available env vars:', {
-      STRAPI_URL: !!STRAPI_URL,
-      NEXT_PUBLIC_STRAPI_URL: !!process.env.NEXT_PUBLIC_STRAPI_URL,
-      NODE_ENV: process.env.NODE_ENV,
-    });
     throw new Error('STRAPI_URL environment variable is not configured');
   }
 
-  return createStrapiClient(STRAPI_URL, STRAPI_TOKEN);
-}
-
-/**
- * Get Client API client instance
- */
-export function getClientApiClient() {
   if (!CLIENT_API_BASE_URL) {
     console.error('API_BASE_URL environment variable is not configured');
     throw new Error('API_BASE_URL environment variable is not configured');
   }
 
-  return createClientApiClient(CLIENT_API_BASE_URL);
+  initStrapi({
+    baseUrl: STRAPI_URL,
+    token: STRAPI_TOKEN,
+    timeout: 10000,
+  });
+
+  initClientApi({
+    baseUrl: CLIENT_API_BASE_URL,
+    apiKey: CLIENT_API_KEY,
+    timeout: 15000,
+  });
+
+  initialized = true;
+}
+
+export function ensureBffInitialized(): void {
+  if (!initialized) {
+    initBff();
+  }
 }

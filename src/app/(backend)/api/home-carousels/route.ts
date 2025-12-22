@@ -4,7 +4,7 @@ import type {
   HomeCarouselResponseDTO,
   HomeCarouselsErrorDTO,
 } from '@/types/api/home-carousels';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -19,13 +19,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
-    const strapiData = await handleHomeCarousel(strapiClient, {
+    ensureBffInitialized();
+    const strapiData = await handleHomeCarousel({
       institutionSlug,
       noCache,
     });
 
-    // Transform Strapi response to expected DTO format
     const transformedData: HomeCarouselResponseDTO = {
       data: strapiData.data.map((item) => ({
         id: item.id,

@@ -2,11 +2,8 @@ import { NextRequest, NextResponse } from 'next/server';
 import { handlePerguntasFrequentes } from '@/bff/handlers/perguntas-frequentes';
 import type { StrapiPerguntaFrequente } from '@/bff/handlers/perguntas-frequentes/types';
 import type { FaqsErrorDTO, FaqsResponseDTO } from '@/types/api/faqs';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
-/**
- * Transform a single Strapi FAQ to DTO format
- */
 function transformFaqToDTO(faq: StrapiPerguntaFrequente) {
   return {
     id: faq.id,
@@ -28,8 +25,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
-    const strapiData = await handlePerguntasFrequentes(strapiClient, {
+    ensureBffInitialized();
+    const strapiData = await handlePerguntasFrequentes({
       institutionSlug,
       noCache,
     });

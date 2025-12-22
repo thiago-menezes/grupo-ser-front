@@ -1,15 +1,14 @@
-export interface UnitsQueryParams {
+export type StrapiUnitsQueryParams = {
   institutionSlug: string;
-}
+};
 
-// Client API types
-export interface ClientUnitsQueryParams {
+export type ClientUnitsQueryParams = {
   institution: string;
   state: string;
   city: string;
-}
+};
 
-export interface ClientUnitsResponse {
+export type ClientUnitsResponse = {
   data: Array<{
     id: number;
     name: string;
@@ -22,15 +21,13 @@ export interface ClientUnitsResponse {
     state: string;
     city: string;
   };
-}
+};
 
-// Strapi units query by ID
-export interface UnitByIdQueryParams {
+export type UnitByIdQueryParams = {
   institutionSlug: string;
   unitId: number;
-}
+};
 
-// Strapi response with Portuguese field names
 export type StrapiUnitsResponse = {
   data: Array<{
     id: number;

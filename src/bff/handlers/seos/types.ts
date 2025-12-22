@@ -1,4 +1,4 @@
-export interface SeoQueryParams {
+export type SeoQueryParams = {
   institutionSlug: string;
   noCache?: boolean;
-}
+};

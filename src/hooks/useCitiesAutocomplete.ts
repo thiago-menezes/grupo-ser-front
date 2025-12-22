@@ -1,8 +1,8 @@
 'use client';
 
 import { useQuery } from '@tanstack/react-query';
-import { useMemo, useState, useEffect } from 'react';
-import { AutocompleteResponse } from 'types/api/autocomplete';
+import { useState, useEffect } from 'react';
+import { CitiesAutocompleteResponse } from '@/bff/handlers/cities/autocomplete';
 import { query } from '@/libs';
 
 export type CityOption = {
@@ -34,13 +34,12 @@ export function useCitiesAutocomplete(searchQuery: string) {
     queryKey: ['cities-autocomplete', debouncedQuery],
     queryFn: async () => {
       if (!debouncedQuery || debouncedQuery.trim().length < 2) {
-        return { type: 'cities' as const, results: [] };
+        return { results: [] };
       }
 
-      const response = await query<AutocompleteResponse>(
-        '/courses/autocomplete',
+      const response = await query<CitiesAutocompleteResponse>(
+        '/cities/autocomplete',
         {
-          type: 'cities',
           q: debouncedQuery.trim(),
         },
       );
@@ -52,25 +51,7 @@ export function useCitiesAutocomplete(searchQuery: string) {
     gcTime: 10 * 60 * 1000, // 10 minutes garbage collection
   });
 
-  const cities: CityOption[] = useMemo(() => {
-    if (!data || data.type !== 'cities') {
-      return [];
-    }
-
-    return data.results
-      .map((result) => {
-        if ('city' in result && 'state' in result) {
-          return {
-            label: result.label,
-            value: result.value,
-            city: result.city,
-            state: result.state,
-          };
-        }
-        return null;
-      })
-      .filter((city): city is CityOption => city !== null);
-  }, [data]);
+  const cities: CityOption[] = data?.results ?? [];
 
   return {
     cities,

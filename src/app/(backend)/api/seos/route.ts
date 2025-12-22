@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handleSeo } from '@/bff/handlers';
 import type { SeosErrorDTO, SeosResponseDTO } from '@/types/api/seos';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -16,8 +16,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
-    const data = await handleSeo(strapiClient, {
+    ensureBffInitialized();
+    const data = await handleSeo({
       institutionSlug,
       noCache,
     });

@@ -1,17 +1,13 @@
-import type { StrapiClient } from '../../services/strapi';
+import { strapiFetch } from '../../services/strapi';
 import type {
   SearchBannerPromoQueryParams,
   StrapiSearchBannerPromoResponse,
 } from './types';
 
-/**
- * Handle search banner promotional data request
- */
 export async function handleSearchBannerPromo(
-  strapiClient: StrapiClient,
   params: SearchBannerPromoQueryParams,
 ): Promise<StrapiSearchBannerPromoResponse> {
-  const data = await strapiClient.fetch<StrapiSearchBannerPromoResponse>(
+  const data = await strapiFetch<StrapiSearchBannerPromoResponse>(
     'search-banner-promos',
     {
       filters: {

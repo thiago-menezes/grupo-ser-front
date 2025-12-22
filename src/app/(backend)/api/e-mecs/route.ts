@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handleEMec } from '@/bff/handlers/e-mec';
 import type { EMecErrorDTO, EMecResponseDTO } from '@/types/api/e-mecs';
-import { getStrapiClient } from '../services/bff';
+import { ensureBffInitialized } from '../services/bff';
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -16,13 +16,12 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const strapiClient = getStrapiClient();
-    const strapiData = await handleEMec(strapiClient, {
+    ensureBffInitialized();
+    const strapiData = await handleEMec({
       institutionSlug,
       noCache,
     });
 
-    // Transform Strapi response to expected DTO format
     const transformedData: EMecResponseDTO = {
       data: strapiData.data.map((item) => ({
         id: item.id,

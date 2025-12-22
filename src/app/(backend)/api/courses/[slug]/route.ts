@@ -4,7 +4,7 @@ import type {
   CoursesSlugErrorDTO,
   CoursesSlugResponseDTO,
 } from '@/types/api/courses-slug';
-import { getStrapiClient } from '../../services/bff';
+import { ensureBffInitialized } from '../../services/bff';
 
 export async function GET(
   request: NextRequest,
@@ -12,8 +12,8 @@ export async function GET(
 ) {
   try {
     const { slug } = await params;
-    const strapiClient = getStrapiClient();
-    const response = await handleCourseDetailsFromStrapi(strapiClient, {
+    ensureBffInitialized();
+    const response = await handleCourseDetailsFromStrapi({
       courseSku: slug,
     });
     return NextResponse.json<CoursesSlugResponseDTO>(response);

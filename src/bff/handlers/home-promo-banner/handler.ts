@@ -1,17 +1,13 @@
-import type { StrapiClient } from '../../services/strapi';
+import { strapiFetch } from '../../services/strapi';
 import type {
   HomePromoBannerQueryParams,
   StrapiHomePromoBannerResponse,
 } from './types';
 
-/**
- * Handle home promotional banners data request
- */
 export async function handleHomePromoBanner(
-  strapiClient: StrapiClient,
   params: HomePromoBannerQueryParams,
 ): Promise<StrapiHomePromoBannerResponse> {
-  const data = await strapiClient.fetch<StrapiHomePromoBannerResponse>(
+  const data = await strapiFetch<StrapiHomePromoBannerResponse>(
     'home-promo-banners',
     {
       filters: {

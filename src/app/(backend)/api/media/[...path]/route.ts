@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handleMedia } from '@/bff/handlers';
 import type { MediaErrorDTO } from '@/types/api/media';
-import { getStrapiClient } from '../../services/bff';
+import { ensureBffInitialized } from '../../services/bff';
 
 export async function GET(
   request: NextRequest,
@@ -10,8 +10,8 @@ export async function GET(
   const { path } = await params;
 
   try {
-    const strapiClient = getStrapiClient();
-    const { buffer, contentType } = await handleMedia(strapiClient, { path });
+    ensureBffInitialized();
+    const { buffer, contentType } = await handleMedia({ path });
 
     return new NextResponse(buffer, {
       headers: {

@@ -4,24 +4,14 @@ import type {
   UnitsClientErrorDTO,
   UnitsClientResponseDTO,
 } from '@/types/api/units-client';
-import { getClientApiClient } from '../../services/bff';
+import { ensureBffInitialized } from '../../services/bff';
 
-/**
- * GET /api/units/client
- * Fetch units from client API by geographic location
- *
- * Query params:
- * - institution: Institution slug (e.g., "unama")
- * - state: State abbreviation (e.g., "pa")
- * - city: City name (e.g., "Ananindeua" or "São José")
- */
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
   const institution = searchParams.get('institution');
   const state = searchParams.get('state');
   const city = searchParams.get('city');
 
-  // Validate required parameters
   if (!institution) {
     return NextResponse.json<UnitsClientErrorDTO>(
       { error: 'institution query parameter is required' },
@@ -44,8 +34,8 @@ export async function GET(request: NextRequest) {
   }
 
   try {
-    const clientApiClient = getClientApiClient();
-    const data = await handleClientUnits(clientApiClient, {
+    ensureBffInitialized();
+    const data = await handleClientUnits({
       institution,
       state,
       city,
@@ -53,7 +43,6 @@ export async function GET(request: NextRequest) {
 
     return NextResponse.json<UnitsClientResponseDTO>(data, {
       headers: {
-        // Cache for 1 hour, stale-while-revalidate for 24 hours
         'Cache-Control': 'public, s-maxage=3600, stale-while-revalidate=86400',
       },
     });
