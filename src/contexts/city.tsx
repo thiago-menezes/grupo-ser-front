@@ -39,6 +39,34 @@ const DEFAULT_CITY_DATA: CityStorageData = {
 };
 
 /**
+ * Words that should remain lowercase in city names (Portuguese prepositions and articles)
+ */
+const LOWERCASE_WORDS = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em']);
+
+/**
+ * Capitalize a city name properly for Brazilian cities
+ * Handles prepositions and special characters
+ */
+function capitalizeCityName(name: string): string {
+  return name
+    .toLowerCase()
+    .split(' ')
+    .map((word, index) => {
+      // First word is always capitalized
+      if (index === 0) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
+      }
+      // Keep prepositions and articles lowercase
+      if (LOWERCASE_WORDS.has(word)) {
+        return word;
+      }
+      // Capitalize other words
+      return word.charAt(0).toUpperCase() + word.slice(1);
+    })
+    .join(' ');
+}
+
+/**
  * Parse city from URL format: city:name-state:code
  * Returns null if invalid format
  */
@@ -47,7 +75,7 @@ function parseCityFromUrl(
 ): { city: string; state: string } | null {
   const legacyMatch = urlValue.match(/^city:(.+?)-state:([a-z]{2})$/i);
   if (legacyMatch) {
-    const cityName = legacyMatch[1].replace(/-/g, ' ');
+    const cityName = capitalizeCityName(legacyMatch[1].replace(/-/g, ' '));
     const stateCode = legacyMatch[2].toUpperCase();
     return { city: cityName, state: stateCode };
   }
@@ -55,7 +83,9 @@ function parseCityFromUrl(
   const normalized = urlValue.trim();
   const lastDash = normalized.lastIndexOf('-');
   if (lastDash > 0) {
-    const cityPart = normalized.slice(0, lastDash).replace(/-/g, ' ');
+    const cityPart = capitalizeCityName(
+      normalized.slice(0, lastDash).replace(/-/g, ' '),
+    );
     const statePart = normalized.slice(lastDash + 1).toUpperCase();
     if (statePart.length === 2) {
       return { city: cityPart, state: statePart };
@@ -95,7 +125,7 @@ export function CityProvider({ children }: { children: ReactNode }) {
       // Support plain query params (used by course details pages), e.g. ?city=ananindeua&state=pa
       if (stateFromUrl) {
         setCityData({
-          city: cityFromUrl,
+          city: capitalizeCityName(cityFromUrl),
           state: stateFromUrl.toUpperCase(),
           timestamp: Date.now(),
           source: 'manual',
@@ -104,8 +134,9 @@ export function CityProvider({ children }: { children: ReactNode }) {
     }
   }, [setCityData]);
 
-  const city = cityData.city;
-  const state = cityData.state;
+  // Always ensure city name is properly capitalized (handles legacy lowercase values in localStorage)
+  const city = cityData.city ? capitalizeCityName(cityData.city) : '';
+  const state = cityData.state ? cityData.state.toUpperCase() : '';
   const source = cityData.source || 'default';
 
   const setCityState = useCallback(
