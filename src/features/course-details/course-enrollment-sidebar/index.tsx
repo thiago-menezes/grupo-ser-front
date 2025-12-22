@@ -1,6 +1,11 @@
-import { Turnstile } from '@marsidev/react-turnstile';
+'use client';
+
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
+import {
+  GoogleReCaptchaProvider,
+  useGoogleReCaptcha,
+} from 'react-google-recaptcha-v3';
 import { Button, Text, TextField, View } from 'reshaped';
 import { withMask } from 'use-mask-input';
 import { formatPrice } from '@/utils';
@@ -16,13 +21,19 @@ export type CourseEnrollmentSidebarProps = {
   selectedAdmissionFormCode?: string | null;
 };
 
-export function CourseEnrollmentSidebar({
+const RECAPTCHA_SITE_KEY =
+  process.env.NEXT_PUBLIC_RECAPTCHA_SITE_KEY ||
+  '6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI';
+
+function CourseEnrollmentSidebarContent({
   course,
   selectedModalityId,
   selectedUnitId,
   selectedPeriodId,
   selectedAdmissionFormCode,
 }: CourseEnrollmentSidebarProps) {
+  const { executeRecaptcha } = useGoogleReCaptcha();
+
   // Get offerings for selected modality
   const modalityOfferings = course.offerings.filter(
     (o) => !selectedModalityId || o.modalityId === selectedModalityId,
@@ -110,35 +121,64 @@ export function CourseEnrollmentSidebar({
     phone: '',
   });
 
-  const [firstClick, setFirstClick] = useState(false);
-  const [turnstileSuccess, setTurnstileSuccess] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
   const [formHasTouched, setFormHasTouched] = useState(false);
 
   const clientApiPrice = getClientApiPrice();
+
+  // Name validation
   const isFullNameValid = formData.name.trim().split(/\s+/).length >= 2;
   const nameError = !formData.name.trim()
     ? 'Nome é obrigatório'
     : !isFullNameValid
       ? 'Informe nome e sobrenome'
       : null;
-  const isFormValid =
-    !nameError && !!formData.email.trim() && !!formData.phone.trim();
 
-  return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        if (!isFormValid) {
-          setFormHasTouched(true);
-          return;
-        }
-        if (!turnstileSuccess) {
-          setFirstClick(true);
-        } else {
+  // Phone validation - mask (99) 99999-9999 produces 15 characters when complete
+  const isPhoneComplete = formData.phone.replace(/\D/g, '').length >= 11;
+  const phoneError = !formData.phone.trim()
+    ? 'Celular é obrigatório'
+    : !isPhoneComplete
+      ? 'Informe o telefone completo'
+      : null;
+
+  const isFormValid = !nameError && !phoneError && !!formData.email.trim();
+
+  const handleSubmit = useCallback(
+    async (e: React.FormEvent) => {
+      e.preventDefault();
+
+      if (!isFormValid) {
+        setFormHasTouched(true);
+        return;
+      }
+
+      if (!executeRecaptcha) {
+        console.error('reCAPTCHA not loaded');
+        return;
+      }
+
+      setIsSubmitting(true);
+
+      try {
+        // Execute reCAPTCHA verification
+        const token = await executeRecaptcha('enrollment_form');
+
+        if (token) {
+          // reCAPTCHA passed, redirect to checkout
           router.push(`https://${checkoutUrl}`);
         }
-      }}
-    >
+      } catch (error) {
+        console.error('reCAPTCHA error:', error);
+      } finally {
+        setIsSubmitting(false);
+      }
+    },
+    [isFormValid, executeRecaptcha, checkoutUrl, router],
+  );
+
+  return (
+    <form onSubmit={handleSubmit}>
       <View className={styles.sidebar}>
         <View className={styles.card}>
           <View className={styles.header}>
@@ -201,7 +241,7 @@ export function CourseEnrollmentSidebar({
               placeholder="Celular"
               className={styles.field}
               value={formData.phone}
-              hasError={formHasTouched && !isFormValid && !formData.phone}
+              hasError={formHasTouched && !!phoneError}
               onChange={({ value }) =>
                 setFormData({ ...formData, phone: value })
               }
@@ -212,10 +252,7 @@ export function CourseEnrollmentSidebar({
             />
 
             <Text variant="caption-2" color="critical">
-              {formHasTouched &&
-                !isFormValid &&
-                !formData.phone &&
-                'Celular é obrigatório'}
+              {formHasTouched && phoneError}
             </Text>
           </View>
 
@@ -253,21 +290,14 @@ export function CourseEnrollmentSidebar({
             </View>
           )}
 
-          {firstClick && (
-            <Turnstile
-              siteKey="1x00000000000000000000AA"
-              onSuccess={() => setTurnstileSuccess(true)}
-            />
-          )}
-
           <Button
             color="primary"
             fullWidth
             type="submit"
             className={styles.submitButton}
-            disabled={!turnstileSuccess && firstClick}
+            disabled={isSubmitting}
           >
-            Inscrever-se
+            {isSubmitting ? 'Verificando...' : 'Inscrever-se'}
           </Button>
         </View>
 
@@ -276,5 +306,13 @@ export function CourseEnrollmentSidebar({
         )}
       </View>
     </form>
+  );
+}
+
+export function CourseEnrollmentSidebar(props: CourseEnrollmentSidebarProps) {
+  return (
+    <GoogleReCaptchaProvider reCaptchaKey={RECAPTCHA_SITE_KEY}>
+      <CourseEnrollmentSidebarContent {...props} />
+    </GoogleReCaptchaProvider>
   );
 }

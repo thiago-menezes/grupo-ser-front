@@ -45,6 +45,10 @@ export const useCourseGrid = () => {
       shifts: filters.shifts.length > 0 ? filters.shifts : undefined,
       durations: filters.durations.length > 0 ? filters.durations : undefined,
       courseName: filters.courseName || undefined,
+      precoMin:
+        filters.priceRange.min !== 100 ? filters.priceRange.min : undefined,
+      precoMax:
+        filters.priceRange.max !== 4500 ? filters.priceRange.max : undefined,
     },
     currentPage,
     ITEMS_PER_PAGE,

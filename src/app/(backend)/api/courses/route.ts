@@ -39,16 +39,16 @@ function parseSearchParams(searchParams: URLSearchParams): CoursesSearchParams {
     params.durations = durations;
   }
 
-  const minPrice = searchParams.get('minPrice');
-  if (minPrice) {
-    const parsed = parseFloat(minPrice);
-    if (!isNaN(parsed)) params.minPrice = parsed;
+  const precoMin = searchParams.get('precoMin');
+  if (precoMin) {
+    const parsed = parseFloat(precoMin);
+    if (!isNaN(parsed)) params.precoMin = parsed;
   }
 
-  const maxPrice = searchParams.get('maxPrice');
-  if (maxPrice) {
-    const parsed = parseFloat(maxPrice);
-    if (!isNaN(parsed)) params.maxPrice = parsed;
+  const precoMax = searchParams.get('precoMax');
+  if (precoMax) {
+    const parsed = parseFloat(precoMax);
+    if (!isNaN(parsed)) params.precoMax = parsed;
   }
 
   const page = searchParams.get('page');

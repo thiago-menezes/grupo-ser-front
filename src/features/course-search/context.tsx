@@ -248,11 +248,11 @@ export function CourseFiltersProvider({ children }: PropsWithChildren) {
             filters.radius !== DEFAULT_FILTERS.radius
               ? String(filters.radius)
               : null,
-          minPrice:
+          precoMin:
             filters.priceRange.min !== DEFAULT_FILTERS.priceRange.min
               ? String(filters.priceRange.min)
               : null,
-          maxPrice:
+          precoMax:
             filters.priceRange.max !== DEFAULT_FILTERS.priceRange.max
               ? String(filters.priceRange.max)
               : null,

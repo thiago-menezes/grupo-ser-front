@@ -15,7 +15,6 @@
   },
   "dependencies": {
     "@hookform/resolvers": "^5.2.2",
-    "@marsidev/react-turnstile": "^1.4.0",
     "@tanstack/react-query": "^5.90.11",
     "@tanstack/react-query-devtools": "^5.91.1",
     "axios": "^1.13.2",
@@ -24,6 +23,7 @@
     "next": "^16.0.5",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-google-recaptcha-v3": "^1.11.0",
     "react-hook-form": "^7.67.0",
     "react-markdown": "^10.1.0",
     "react-toastify": "^11.0.5",

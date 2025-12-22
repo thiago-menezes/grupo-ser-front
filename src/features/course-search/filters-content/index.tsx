@@ -1,5 +1,5 @@
 import { clsx } from 'clsx';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { View } from 'reshaped';
 import { ActiveFilters } from '../active-filters';
@@ -56,6 +56,14 @@ export function FiltersContent({
     applyFilters(data);
   };
 
+  // Callback for CourseNameInput to trigger form submission on Enter
+  const handleEnterKeySubmit = useCallback(() => {
+    handleSubmit(onSubmit)();
+    if (handleCloseModal) {
+      handleCloseModal();
+    }
+  }, [handleSubmit, handleCloseModal]);
+
   return (
     <View className={styles.filtersContent}>
       <div
@@ -73,7 +81,7 @@ export function FiltersContent({
 
         {/* <SearchRadiusSlider control={control} /> */}
 
-        <CourseNameInput control={control} />
+        <CourseNameInput control={control} onSubmit={handleEnterKeySubmit} />
 
         <CourseModalityCheckboxes control={control} />
 

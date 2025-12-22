@@ -105,12 +105,12 @@ function applyClientSideFilters(
     });
   }
 
-  if (params.minPrice !== undefined) {
-    filtered = filtered.filter((course) => course.minPrice >= params.minPrice!);
+  if (params.precoMin !== undefined) {
+    filtered = filtered.filter((course) => course.precoMin >= params.precoMin!);
   }
 
-  if (params.maxPrice !== undefined) {
-    filtered = filtered.filter((course) => course.minPrice <= params.maxPrice!);
+  if (params.precoMax !== undefined) {
+    filtered = filtered.filter((course) => course.precoMin <= params.precoMax!);
   }
 
   return filtered;
@@ -180,8 +180,8 @@ export async function handleOffersSearch(
     marca,
     estado: params.state,
     cidade: params.city,
-    precoMin: params.minPrice,
-    precoMax: params.maxPrice,
+    precoMin: params.precoMin,
+    precoMax: params.precoMax,
     modalidades:
       params.modalities?.length === 1
         ? mapModalityToApi(params.modalities[0])

@@ -6,8 +6,8 @@ export type CoursesSearchParams = {
   modalities?: string[];
   shifts?: string[];
   durations?: string[];
-  minPrice?: number;
-  maxPrice?: number;
+  precoMin?: number;
+  precoMax?: number;
   page?: number;
   perPage?: number;
 };
@@ -20,7 +20,7 @@ export type CourseCard = {
   shifts: string[];
   durationMonths: number;
   durationText: string;
-  minPrice: number;
+  precoMin: number;
   priceText: string;
   campus: string;
   city: string;

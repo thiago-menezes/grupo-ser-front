@@ -81,7 +81,7 @@ export function transformOfferToCard(
     shifts,
     durationMonths: offer.Periodo,
     durationText: formatDuration(offer.Periodo),
-    minPrice,
+    precoMin: minPrice,
     priceText: minPrice > 0 ? `R$ ${minPrice.toFixed(2)}` : 'A consultar',
     campus: '',
     city,

@@ -176,6 +176,8 @@ export const useQueryCoursesSearch = (
       filters.shifts?.join(','),
       filters.durations?.join(','),
       filters.courseName,
+      filters.precoMin,
+      filters.precoMax,
       page,
       perPage,
     ],
@@ -198,6 +200,12 @@ export const useQueryCoursesSearch = (
       }
       if (filters.courseName) {
         params.set('course', filters.courseName);
+      }
+      if (filters.precoMin !== undefined) {
+        params.set('precoMin', filters.precoMin.toString());
+      }
+      if (filters.precoMax !== undefined) {
+        params.set('precoMax', filters.precoMax.toString());
       }
 
       const response = await fetch(`/api/courses?${params.toString()}`);

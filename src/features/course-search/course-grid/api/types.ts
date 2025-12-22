@@ -4,6 +4,8 @@ export type CityCoursesFilters = {
   shifts: string[];
   durations: string[];
   courseName: string;
+  precoMin?: number;
+  precoMax?: number;
 };
 
 export type CourseFilters = {
