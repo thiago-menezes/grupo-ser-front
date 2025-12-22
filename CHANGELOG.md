@@ -1,3 +1,15 @@
+# [1.4.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.3.0...v1.4.0) (2025-12-22)
+
+
+### Bug Fixes
+
+* Extract CourseDetails from data property in fetchCourseDetails response. ([5e4bce9](https://github.com/thiago-menezes/grupo-ser-front/commit/5e4bce905fef3df45d47b10243459ee80c06cec8))
+
+
+### Features
+
+* Introduce dynamic course detail metadata, enhance course search with Enter key submission and `precoMin`/`precoMax` filters, and migrate to Google reCAPTCHA v3. ([c7c28ad](https://github.com/thiago-menezes/grupo-ser-front/commit/c7c28adc63fd96f685851ae9f16367e385a9dcbf))
+
 # [1.3.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.2.0...v1.3.0) (2025-12-22)
 
 
