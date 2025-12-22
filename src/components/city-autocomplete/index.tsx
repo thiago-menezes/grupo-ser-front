@@ -4,7 +4,7 @@ import { useState, useRef, useEffect, useMemo, startTransition } from 'react';
 import { FormControl, Autocomplete } from 'reshaped';
 import type { AutocompleteProps } from 'reshaped';
 import { useCitiesAutocomplete, type CityOption } from '@/hooks';
-import { formatCityDisplayValue } from '@/utils/format-city';
+import { formatCityDisplayValue } from '@/utils/format-name';
 import { Icon } from '../icon';
 import { CityAutocompleteProps } from './types';
 

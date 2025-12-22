@@ -1,3 +1,4 @@
+export * from './format-name';
 export * from './format-price';
 export * from './media-url';
 export * from './slugify';

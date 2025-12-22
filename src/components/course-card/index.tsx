@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import { Button } from 'reshaped';
 import { useCurrentInstitution } from '@/hooks/useInstitution';
+import { toProperCase } from '@/utils';
 import { Icon } from '../icon';
 import { MODALITY_LABELS } from './constants';
 import styles from './styles.module.scss';
@@ -22,12 +23,12 @@ export function CourseCard({ course }: CourseCardProps) {
   return (
     <Link href={courseUrl} className={styles.card}>
       <div className={styles.header}>
-        <div className={styles.title}>{course.title}</div>
+        <div className={styles.title}>{toProperCase(course.title)}</div>
 
         <div className={styles.meta}>
           <div className={styles.metaItem}>
             <Icon name="school" size={12} aria-hidden="true" />
-            <span>{course.degree}</span>
+            <span>{toProperCase(course.degree)}</span>
           </div>
           <div className={styles.metaItem}>
             <Icon name="clock" size={12} aria-hidden="true" />
@@ -54,9 +55,11 @@ export function CourseCard({ course }: CourseCardProps) {
 
       <div className={styles.locationWrapper}>
         <div className={styles.location}>
-          <span className={styles.campusName}>{course.campusName}</span>
+          <span className={styles.campusName}>
+            {toProperCase(course.campusName)}
+          </span>
           <span className={styles.campusCity}>
-            {course.campusCity} - {course.campusState}
+            {toProperCase(course.campusCity)} - {course.campusState}
           </span>
         </div>
       </div>
@@ -64,7 +67,7 @@ export function CourseCard({ course }: CourseCardProps) {
       <Button
         color="primary"
         fullWidth
-        aria-label={`Saiba mais sobre ${course.title}`}
+        aria-label={`Saiba mais sobre ${toProperCase(course.title)}`}
       >
         Mais sobre o curso
       </Button>

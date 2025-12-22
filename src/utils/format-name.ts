@@ -7,7 +7,7 @@
  *
  * @example
  * formatCityDisplayValue("city:recife-state:pe") // "Recife - PE"
- * formatCityDisplayValue("city:sao-jose-dos-campos-state:sp") // "São José Dos Campos - SP"
+ * formatCityDisplayValue("city:sao-jose-dos-campos-state:sp") // "São José dos Campos - SP"
  * formatCityDisplayValue("Recife - PE") // "Recife - PE"
  * formatCityDisplayValue("recife") // "Recife"
  * formatCityDisplayValue("sao paulo") // "São Paulo"
@@ -24,7 +24,7 @@ export function formatCityDisplayValue(value: string): string {
     const cityName = citySlug.replace(/-/g, ' ');
 
     // Format city name: capitalize each word
-    const formattedCity = formatCityName(cityName);
+    const formattedCity = toProperCase(cityName);
 
     return `${formattedCity} - ${stateCode}`;
   }
@@ -36,7 +36,7 @@ export function formatCityDisplayValue(value: string): string {
     const stateCode = normalized.slice(lastDash + 1).toUpperCase();
     if (stateCode.length === 2) {
       const cityName = citySlug.replace(/-/g, ' ');
-      const formattedCity = formatCityName(cityName);
+      const formattedCity = toProperCase(cityName);
       return `${formattedCity} - ${stateCode}`;
     }
   }
@@ -49,23 +49,46 @@ export function formatCityDisplayValue(value: string): string {
   }
 
   // Simple city name - capitalize it
-  return formatCityName(value);
+  return toProperCase(value);
 }
 
 /**
- * Capitalizes each word in a city name
- * Handles special cases like "de", "da", "do", etc.
+ * Words that should remain lowercase in Portuguese proper names
+ * (prepositions and articles)
  */
-function formatCityName(cityName: string): string {
-  return cityName
+const LOWERCASE_WORDS = new Set(['de', 'da', 'do', 'das', 'dos', 'e', 'em']);
+
+/**
+ * Converts any text to proper case for Portuguese names (cities, courses, etc.)
+ * Handles text in any case (lowercase, UPPERCASE, or mixed)
+ * Prepositions and articles remain lowercase except when first word
+ *
+ * @param text - The text to convert (can be lowercase, UPPERCASE, or mixed)
+ * @returns Properly cased text
+ *
+ * @example
+ * toProperCase("são paulo") // "São Paulo"
+ * toProperCase("SÃO PAULO") // "São Paulo"
+ * toProperCase("ADMINISTRAÇÃO DE EMPRESAS") // "Administração de Empresas"
+ * toProperCase("ribeirão das neves") // "Ribeirão das Neves"
+ */
+export function toProperCase(text: string): string {
+  if (!text) return '';
+
+  return text
+    .toLowerCase()
     .split(' ')
-    .map((word) => {
-      // Handle special cases like "de", "da", "do", "dos", "das"
-      const lowerWords = ['de', 'da', 'do', 'dos', 'das', 'e'];
-      if (lowerWords.includes(word.toLowerCase())) {
-        return word.toLowerCase();
+    .map((word, index) => {
+      // First word is always capitalized
+      if (index === 0) {
+        return word.charAt(0).toUpperCase() + word.slice(1);
       }
-      return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+      // Keep prepositions and articles lowercase
+      if (LOWERCASE_WORDS.has(word)) {
+        return word;
+      }
+      // Capitalize other words
+      return word.charAt(0).toUpperCase() + word.slice(1);
     })
     .join(' ');
 }
