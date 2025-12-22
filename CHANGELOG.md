@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.2.0...v1.3.0) (2025-12-22)
+
+
+### Features
+
+* Introduce `toProperCase` utility and apply it for consistent text capitalization across components and city context. ([8c56b8f](https://github.com/thiago-menezes/grupo-ser-front/commit/8c56b8f5b1301da0677a899d5da33594d708fc0c))
+
 # [1.2.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.1.2...v1.2.0) (2025-12-22)
 
 
