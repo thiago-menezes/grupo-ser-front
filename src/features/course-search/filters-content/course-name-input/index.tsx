@@ -1,5 +1,5 @@
 import { Controller } from 'react-hook-form';
-import type { Control, UseFormHandleSubmit } from 'react-hook-form';
+import type { Control } from 'react-hook-form';
 import { CourseInput } from '@/components';
 import type { CourseFiltersFormValues } from '../../types';
 

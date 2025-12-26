@@ -62,6 +62,45 @@ flowchart LR
     BFF --> CLIENT["React Client"]
 ```
 
+## 🌐 Arquitetura de Domínio (V1)
+
+Na V1, o site será acessado via **cursos.unama.com.br** (em vez de `www.dominio.com/unama`):
+
+```mermaid
+flowchart LR
+    subgraph DNS["🌍 Route 53"]
+        CNAME["cursos.unama.com.br<br/>CNAME → CloudFront"]
+    end
+
+    subgraph CDN["📦 CloudFront"]
+        CF["Distribution<br/>Alternate Domain:<br/>cursos.unama.com.br"]
+        CERT["🔒 ACM Certificate<br/>*.unama.com.br"]
+    end
+
+    subgraph Origin["🎯 Origin"]
+        ALB["ALB<br/>grupo-ser-alb"]
+        NEXT["Next.js<br/>ECS Fargate"]
+    end
+
+    CNAME --> CF
+    CF -.->|"SSL/TLS"| CERT
+    CF -->|"Host: cursos.unama.com.br"| ALB
+    ALB --> NEXT
+```
+
+### Configuração de Domínio
+
+| Componente     | Configuração                       | Descrição                                |
+| -------------- | ---------------------------------- | ---------------------------------------- |
+| **Route 53**   | `cursos.unama.com.br` → CloudFront | CNAME ou Alias Record                    |
+| **ACM**        | `*.unama.com.br`                   | Certificado wildcard na região us-east-1 |
+| **CloudFront** | Alternate Domain Name              | `cursos.unama.com.br`                    |
+| **ALB**        | Host Header                        | Recebe requisições do CloudFront         |
+| **Next.js**    | `APP_BASE_URL`                     | `https://cursos.unama.com.br`            |
+
+> [!NOTE]
+> O certificado ACM **deve** estar na região `us-east-1` para uso com CloudFront.
+
 ## 📋 Requisitos de Infraestrutura
 
 | Recurso               | Configuração            | Descrição                           |

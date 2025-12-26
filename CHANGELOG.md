@@ -2,29 +2,25 @@
 
 # [1.4.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.3.0...v1.4.0) (2025-12-22)
 
-
 ### Bug Fixes
 
-* Extract CourseDetails from data property in fetchCourseDetails response. ([5e4bce9](https://github.com/thiago-menezes/grupo-ser-front/commit/5e4bce905fef3df45d47b10243459ee80c06cec8))
-
+- Extract CourseDetails from data property in fetchCourseDetails response. ([5e4bce9](https://github.com/thiago-menezes/grupo-ser-front/commit/5e4bce905fef3df45d47b10243459ee80c06cec8))
 
 ### Features
 
-* Introduce dynamic course detail metadata, enhance course search with Enter key submission and `precoMin`/`precoMax` filters, and migrate to Google reCAPTCHA v3. ([c7c28ad](https://github.com/thiago-menezes/grupo-ser-front/commit/c7c28adc63fd96f685851ae9f16367e385a9dcbf))
+- Introduce dynamic course detail metadata, enhance course search with Enter key submission and `precoMin`/`precoMax` filters, and migrate to Google reCAPTCHA v3. ([c7c28ad](https://github.com/thiago-menezes/grupo-ser-front/commit/c7c28adc63fd96f685851ae9f16367e385a9dcbf))
 
 # [1.3.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.2.0...v1.3.0) (2025-12-22)
 
-
 ### Features
 
-* Introduce `toProperCase` utility and apply it for consistent text capitalization across components and city context. ([8c56b8f](https://github.com/thiago-menezes/grupo-ser-front/commit/8c56b8f5b1301da0677a899d5da33594d708fc0c))
+- Introduce `toProperCase` utility and apply it for consistent text capitalization across components and city context. ([8c56b8f](https://github.com/thiago-menezes/grupo-ser-front/commit/8c56b8f5b1301da0677a899d5da33594d708fc0c))
 
 # [1.2.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.1.2...v1.2.0) (2025-12-22)
 
-
 ### Features
 
-* Ensure consistent city name capitalization, including prepositions, by applying new logic to URL parsing and city context state. ([caa79a2](https://github.com/thiago-menezes/grupo-ser-front/commit/caa79a2276270417f0eac9fb9a28c34bef3c7931))
+- Ensure consistent city name capitalization, including prepositions, by applying new logic to URL parsing and city context state. ([caa79a2](https://github.com/thiago-menezes/grupo-ser-front/commit/caa79a2276270417f0eac9fb9a28c34bef3c7931))
 
 ## [1.1.2](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.1.1...v1.1.2) (2025-12-22)
 
