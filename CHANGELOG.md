@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.5.0...v1.6.0) (2025-12-29)
+
+
+### Features
+
+* Add course video and FAQ sections, and implement lead creation for enrollment forms. ([e0b42be](https://github.com/thiago-menezes/grupo-ser-front/commit/e0b42be19b6b22e548cf9cb0a99420cba0acc41e))
+
 # [1.5.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.4.2...v1.5.0) (2025-12-29)
 
 
