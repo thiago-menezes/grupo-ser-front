@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.4.2...v1.5.0) (2025-12-29)
+
+
+### Features
+
+* Implement grid display variant for GeoCoursesSection with mock data, enhance CourseCard with className prop, and adjust filter content height constant. ([a03e312](https://github.com/thiago-menezes/grupo-ser-front/commit/a03e312e74d627d96a54437194560ec9e93f8654))
+
 ## [1.4.2](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.4.1...v1.4.2) (2025-12-26)
 
 ## [1.4.1](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.4.0...v1.4.1) (2025-12-23)
