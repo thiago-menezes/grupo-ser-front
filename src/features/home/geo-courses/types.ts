@@ -18,4 +18,5 @@ export type GeoCoursesData = {
 
 export type GeoCourseSectionProps = {
   title: string;
+  variant?: 'carousel' | 'grid';
 };

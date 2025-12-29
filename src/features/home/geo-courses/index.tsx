@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { Button, Text } from 'reshaped';
 import { Icon, Pagination, CourseCard } from '@/components';
 import { CourseCardSkeleton } from '@/components/course-card/skeleton';
@@ -19,7 +19,29 @@ import type { GeoCourseSectionProps } from './types';
 
 const SKELETON_COUNT = 5;
 
-export function GeoCoursesSection({ title }: GeoCourseSectionProps) {
+const MOCK_COURSES: CourseCardType[] = Array.from({ length: 8 }).map(
+  (_, i) => ({
+    id: `mock-${i}`,
+    courseId: `mock-${i}`,
+    courseName: `Curso Exemplo ${i + 1}`,
+    level: 'Graduação',
+    modalities: ['Presencial'],
+    shifts: ['Noite'],
+    durationMonths: 48,
+    durationText: '4 anos',
+    precoMin: 299.9,
+    priceText: 'R$ 299,90',
+    campus: 'Campus Principal',
+    city: 'São Paulo',
+    state: 'SP',
+    brand: 'univeritas',
+  }),
+) as unknown as CourseCardType[];
+
+export function GeoCoursesSection({
+  title,
+  variant = 'carousel',
+}: GeoCourseSectionProps) {
   const router = useRouter();
   const { institutionId } = useCurrentInstitution();
   const scrollContainerRef = useRef<HTMLDivElement | null>(null);
@@ -48,14 +70,23 @@ export function GeoCoursesSection({ title }: GeoCourseSectionProps) {
   const state = contextState || geoState || '';
   const hasCity = Boolean(city && state);
 
-  const { data: fetchedData, isLoading: isFetching } = useQueryGeoCourses({
+  const { isLoading: isFetching } = useQueryGeoCourses({
     city: city || undefined,
     state: state || undefined,
     enabled: true,
   });
 
   const showSkeletons = isLoading || isFetching;
-  const coursesToShow = showSkeletons ? [] : fetchedData?.courses?.slice(0, 5);
+
+  const coursesToShow = useMemo(() => {
+    if (showSkeletons) return [];
+
+    // Using mock courses for both variants as requested
+    const sourceData = MOCK_COURSES;
+
+    const limit = variant === 'grid' ? 8 : 8; // Showing 8 items for carousel too to allow scrolling
+    return sourceData.slice(0, limit);
+  }, [showSkeletons, variant]);
 
   const { currentPage, totalPages, goToPage, isScrollable } = usePagination({
     totalItems: showSkeletons ? SKELETON_COUNT : coursesToShow?.length || 0,
@@ -147,7 +178,7 @@ export function GeoCoursesSection({ title }: GeoCourseSectionProps) {
         <div className={styles.coursesContainer}>
           <div
             ref={scrollContainerRef}
-            className={styles.coursesScroll}
+            className={variant === 'grid' ? styles.grid : styles.coursesScroll}
             onScroll={handleScroll}
             role="list"
           >
@@ -162,20 +193,28 @@ export function GeoCoursesSection({ title }: GeoCourseSectionProps) {
                   </div>
                 ))
               : coursesToShow?.map((course) => (
-                  <div key={course.id} className={styles.card} role="listitem">
+                  <div
+                    key={course.courseId}
+                    className={styles.card}
+                    role="listitem"
+                  >
                     <CourseCard
+                      key={course.courseId}
                       course={adaptCourseCardToCourseData(
                         course as unknown as CourseCardType,
                       )}
                       onClick={(course) =>
                         handleCourseClick(course as unknown as CourseCardType)
                       }
+                      className={
+                        variant === 'grid' ? styles.cardInner : undefined
+                      }
                     />
                   </div>
                 ))}
           </div>
 
-          {isScrollable && !showSkeletons && (
+          {variant !== 'grid' && isScrollable && !showSkeletons && (
             <Pagination
               currentPage={currentPage}
               totalPages={totalPages}

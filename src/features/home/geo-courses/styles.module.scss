@@ -91,3 +91,27 @@
   width: 290px;
   flex-shrink: 0;
 }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--rs-unit-x4);
+  overflow: visible;
+  padding: 0;
+
+  @media (max-width: 1200px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 900px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.cardInner {
+  max-width: 100% !important;
+}

@@ -17,7 +17,10 @@ const HomePage = () => {
   return (
     <main>
       <HeroSection />
-      <GeoCoursesSection title="Encontre o seu curso e transforme sua carreira!" />
+      <GeoCoursesSection
+        title="Encontre o seu curso e transforme sua carreira!"
+        variant="grid"
+      />
       <PromotionalBanners institutionSlug={institutionId} />
       <ModalitiesSection />
       <AreasSelector />

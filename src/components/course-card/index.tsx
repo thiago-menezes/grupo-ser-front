@@ -7,7 +7,7 @@ import { MODALITY_LABELS } from './constants';
 import styles from './styles.module.scss';
 import type { CourseCardProps } from './types';
 
-export function CourseCard({ course }: CourseCardProps) {
+export function CourseCard({ course, className }: CourseCardProps) {
   const { institutionSlug } = useCurrentInstitution();
 
   // Build course URL with actual course data
@@ -21,7 +21,7 @@ export function CourseCard({ course }: CourseCardProps) {
   const courseUrl = `/${institutionSlug}/cursos/detalhes/${course.id}${queryString ? `?${queryString}` : ''}`;
 
   return (
-    <Link href={courseUrl} className={styles.card}>
+    <Link href={courseUrl} className={`${styles.card} ${className || ''}`}>
       <div className={styles.header}>
         <div className={styles.title}>{toProperCase(course.title)}</div>
 
