@@ -8,12 +8,14 @@ import { CourseAbout } from '../course-about';
 import { CourseAdmissionForms } from '../course-admission-forms';
 import { CourseCoordination } from '../course-coordination';
 import { CourseEnrollmentSidebar } from '../course-enrollment-sidebar';
+import { CourseFaq } from '../course-faq';
 import { CourseImage } from '../course-image';
 import { CourseInfo } from '../course-info';
 import { CourseJobMarketSection } from '../course-job-market-section';
 import { CourseModalitySelector } from '../course-modality-selector';
 import { CourseShiftSelector } from '../course-shift-selector';
 import { CourseTextSection } from '../course-text-section';
+import { CourseVideo } from '../course-video';
 import { CurriculumGridModal } from '../curriculum-grid-modal';
 import type { CourseDetails } from '../types';
 import { useCourseDetailsContent } from './hooks';
@@ -120,6 +122,12 @@ export function CourseDetailsContent({ course }: { course: CourseDetails }) {
             )}
             {course.jobMarketAreas && course.jobMarketAreas.length > 0 && (
               <CourseJobMarketSection areas={course.jobMarketAreas} />
+            )}
+
+            {course.video && <CourseVideo videoUrl={course.video} />}
+
+            {course.faqs && course.faqs.length > 0 && (
+              <CourseFaq faqs={course.faqs} />
             )}
             {course.certificate && (
               <CourseTextSection

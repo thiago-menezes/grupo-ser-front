@@ -4,5 +4,6 @@ export type {
   CourseEnrollmentDTO,
   CourseEnrollmentPaymentOptionDTO,
   CourseEnrollmentPaymentTypeDTO,
+  CourseFaq,
   CourseShiftDTO,
 } from 'types/api/course-details';

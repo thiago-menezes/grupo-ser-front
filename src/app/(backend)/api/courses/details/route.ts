@@ -185,6 +185,7 @@ export async function GET(request: NextRequest) {
         durationMonths: courseData.Periodo,
         shifts: shiftsData,
       },
+      video: 'https://www.youtube.com/watch?v=-_FXDCeiL3g',
     };
 
     let courseDetails: CourseDetailsResponseDTO = strapiCourseDetails

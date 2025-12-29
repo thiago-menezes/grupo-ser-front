@@ -24,6 +24,11 @@ export type CoursePedagogicalProjectDTO = {
   content: string;
 };
 
+export type CourseFaq = {
+  question: string;
+  answer: string;
+};
+
 export type CourseSalaryRangeDTO = {
   level: string;
   range: string;
@@ -152,6 +157,8 @@ export type CourseDetailsDTO = {
   coordinator?: CourseCoordinatorDTO;
   teachers?: CourseTeacherDTO[];
   pedagogicalProject?: CoursePedagogicalProjectDTO;
+  faqs?: CourseFaq[];
+  video?: string;
   jobMarketAreas?: string[];
   salaryRanges?: CourseSalaryRangeDTO[];
   relatedCourses?: RelatedCourseDTO[];

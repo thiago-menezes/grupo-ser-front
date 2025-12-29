@@ -8,6 +8,7 @@ import {
 } from 'react-google-recaptcha-v3';
 import { Button, Text, TextField, View } from 'reshaped';
 import { withMask } from 'use-mask-input';
+import { createLead } from '@/bff/services/client-api';
 import { formatPrice } from '@/utils';
 import { CourseLocationSelector } from '../course-location-selector';
 import type { CourseDetails } from '../types';
@@ -165,16 +166,38 @@ function CourseEnrollmentSidebarContent({
         const token = await executeRecaptcha('enrollment_form');
 
         if (token) {
-          // reCAPTCHA passed, redirect to checkout
+          // Create lead
+          await createLead({
+            name: formData.name,
+            email: formData.email,
+            phone: formData.phone,
+            courseId: course.id,
+            courseName: course.name,
+            unitId: selectedUnitId,
+            periodId: selectedPeriodId,
+            recaptchaToken: token,
+          });
+
+          // Redirect to checkout
           router.push(`https://${checkoutUrl}`);
         }
       } catch (error) {
-        console.error('reCAPTCHA error:', error);
+        console.error('Error submitting form:', error);
+        // You might want to show an error message to the user here
       } finally {
         setIsSubmitting(false);
       }
     },
-    [isFormValid, executeRecaptcha, checkoutUrl, router],
+    [
+      isFormValid,
+      executeRecaptcha,
+      checkoutUrl,
+      router,
+      formData,
+      course,
+      selectedUnitId,
+      selectedPeriodId,
+    ],
   );
 
   return (

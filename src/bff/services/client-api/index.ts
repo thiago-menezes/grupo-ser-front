@@ -31,17 +31,22 @@ export function buildClientApiUrl(
   return url.toString();
 }
 
-export async function clientApiFetch<T>(url: string): Promise<T> {
+export async function clientApiFetch<T>(
+  url: string,
+  options?: RequestInit,
+): Promise<T> {
   const { timeout, apiKey } = getClientApiConfig();
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), timeout || 15000);
 
   try {
     const response = await fetch(url, {
-      method: 'GET',
+      ...options,
+      method: options?.method || 'GET',
       headers: {
         'Content-Type': 'application/json',
         ...(apiKey && { 'x-api-key': apiKey }),
+        ...options?.headers,
       },
       signal: controller.signal,
     });
@@ -60,4 +65,12 @@ export async function clientApiFetch<T>(url: string): Promise<T> {
     }
     throw error;
   }
+}
+
+export async function createLead(data: unknown): Promise<void> {
+  const url = buildClientApiUrl('/leads');
+  await clientApiFetch(url, {
+    method: 'POST',
+    body: JSON.stringify(data),
+  });
 }
