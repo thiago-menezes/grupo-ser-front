@@ -1,3 +1,15 @@
+# [1.7.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.6.0...v1.7.0) (2026-01-05)
+
+
+### Bug Fixes
+
+* return 404 for missing courses in API routes and improve SEO data null checks. ([9db8d64](https://github.com/thiago-menezes/grupo-ser-front/commit/9db8d643734d80178c2b143e013ac7c4955c4246))
+
+
+### Features
+
+* Centralize course routes and remove institution slug from URLs. ([e8c3f62](https://github.com/thiago-menezes/grupo-ser-front/commit/e8c3f620d3023a86555210918d93c53c13158799))
+
 # [1.6.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.5.0...v1.6.0) (2025-12-29)
 
 
