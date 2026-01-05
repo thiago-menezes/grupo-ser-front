@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.7.0...v1.8.0) (2026-01-05)
+
+
+### Features
+
+* overhaul course details API types, introduce data transformers, and add a rich text renderer component. ([b0098be](https://github.com/thiago-menezes/grupo-ser-front/commit/b0098bebe8ece2d2539a678e60502a65c8e248ab))
+
 # [1.7.0](https://github.com/thiago-menezes/grupo-ser-front/compare/v1.6.0...v1.7.0) (2026-01-05)
 
 
