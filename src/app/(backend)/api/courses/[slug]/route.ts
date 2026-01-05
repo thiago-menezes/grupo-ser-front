@@ -16,6 +16,15 @@ export async function GET(
     const response = await handleCourseDetailsFromStrapi({
       courseSku: slug,
     });
+    if (!response) {
+      return NextResponse.json<CoursesSlugErrorDTO>(
+        {
+          error: 'Course not found',
+          message: `Course with slug '${slug}' was not found`,
+        },
+        { status: 404 },
+      );
+    }
     return NextResponse.json<CoursesSlugResponseDTO>(response);
   } catch (error) {
     const statusCode =

@@ -27,7 +27,11 @@ export async function getSeoFromStrapi(
       populate: 'instituicao',
     });
 
-    if (!strapiResponse.data || strapiResponse.data.length === 0) {
+    if (
+      !strapiResponse ||
+      !strapiResponse.data ||
+      strapiResponse.data.length === 0
+    ) {
       return null;
     }
 

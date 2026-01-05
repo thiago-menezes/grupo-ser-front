@@ -28,6 +28,17 @@ export async function GET(
       courseSku: sku,
     });
 
+    if (!strapiCourse) {
+      return NextResponse.json<CourseBySkuErrorDTO>(
+        {
+          error: 'Course not found',
+          message: `Course with SKU '${sku}' was not found`,
+          sku,
+        },
+        { status: 404 },
+      );
+    }
+
     if (institution && state && city && unit) {
       const enrichedCourse = await handleCourseDetailsWithClientApi(
         strapiCourse,
