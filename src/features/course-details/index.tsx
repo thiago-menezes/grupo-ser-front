@@ -1,22 +1,14 @@
+'use client';
+
 import { useParams } from 'next/navigation';
 import { Container, View } from 'reshaped';
-import { useCityContext } from '@/contexts/city';
-import { useCurrentInstitution, useQueryParams } from '@/hooks';
 import { useQueryCourseDetails } from './api/query';
 import { CourseDetailsContent } from './course-details-content';
 import { CourseDetailsSkeleton } from './course-details-skeleton';
 import styles from './styles.module.scss';
 
 export function CourseDetailsPage() {
-  const { searchParams, setParam } = useQueryParams();
-  const { institutionSlug } = useCurrentInstitution();
   const { courseId } = useParams<{ courseId: string }>();
-  const { city: contextCity, state: contextState } = useCityContext();
-
-  const state = searchParams.get('state') || contextState;
-  const city = searchParams.get('city') || contextCity;
-  const unit = searchParams.get('unit');
-  const admissionForm = searchParams.get('admissionForm');
 
   const {
     data: course,
@@ -24,19 +16,7 @@ export function CourseDetailsPage() {
     error,
   } = useQueryCourseDetails({
     courseId: courseId || '',
-    institution: institutionSlug || undefined,
-    state: state || undefined,
-    city: city || undefined,
-    unit: unit || undefined,
-    admissionForm: admissionForm || undefined,
   });
-
-  // Auto-select first unit if not specified and ensure enrollment data loads
-  if (course && !unit && course.units.length > 0 && state && city) {
-    const firstUnit = course.units[0];
-    const unitToUse = firstUnit.originalId || firstUnit.id.toString();
-    setParam('unit', unitToUse);
-  }
 
   if (isLoading) {
     return (

@@ -3,13 +3,13 @@
  * Maps Portuguese field names from Strapi to English DTOs
  */
 
-export interface StrapiInstitution {
+export type StrapiInstitution = {
   id: number;
   documentId: string;
   slug: string;
   nome: string | null;
   codigo?: string | null;
-  cidadePadrao?: string | null;
+  cidade_para_busca_padrao?: string | null;
   estadoPadrao?: string | null;
   ativo?: boolean | null;
   descricao?: string | null;
@@ -19,9 +19,9 @@ export interface StrapiInstitution {
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string | null;
-}
+};
 
-export interface Institution {
+export type Institution = {
   id: number;
   documentId: string;
   name: string;
@@ -34,11 +34,11 @@ export interface Institution {
   website?: string | null;
   primaryColor?: string | null;
   secondaryColor?: string | null;
-}
+};
 
 export function transformInstitution(strapi: StrapiInstitution): Institution {
-  // Parse cidadePadrao if it contains both city and state (e.g., "Manaus - AM")
-  let defaultCity = strapi.cidadePadrao || null;
+  // Parse cidade_para_busca_padrao if it contains both city and state (e.g., "Manaus - AM")
+  let defaultCity = strapi.cidade_para_busca_padrao || null;
   let defaultState = strapi.estadoPadrao || null;
 
   if (defaultCity && defaultCity.includes(' - ')) {
@@ -65,42 +65,45 @@ export function transformInstitution(strapi: StrapiInstitution): Institution {
   };
 }
 
-export interface StrapiUnit {
+export type StrapiUnit = {
   id: number;
   documentId: string;
-  id_unidade: number | null;
+  id_da_unidade: number | null;
   nome: string | null;
   endereco: string | null;
-  latitude: number;
-  longitude: number;
+  latitude: string | null;
+  longitude: string | null;
+  ids_dos_cursos?: unknown;
   fotos?: unknown[];
   instituicao?: StrapiInstitution;
   createdAt?: string;
   updatedAt?: string;
   publishedAt?: string | null;
-}
+};
 
-export interface Unit {
+export type Unit = {
   id: number;
   documentId: string;
   unitId: number | null;
   name: string;
   address: string;
-  latitude: number;
-  longitude: number;
+  latitude: string | null;
+  longitude: string | null;
+  courseIds?: unknown;
   photos?: unknown[];
   institution?: Institution;
-}
+};
 
 export function transformUnit(strapi: StrapiUnit): Unit {
   return {
     id: strapi.id,
     documentId: strapi.documentId,
-    unitId: strapi.id_unidade,
+    unitId: strapi.id_da_unidade,
     name: strapi.nome || '',
     address: strapi.endereco || '',
     latitude: strapi.latitude,
     longitude: strapi.longitude,
+    courseIds: strapi.ids_dos_cursos,
     photos: strapi.fotos || [],
     institution: strapi.instituicao
       ? transformInstitution(strapi.instituicao)

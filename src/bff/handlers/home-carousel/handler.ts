@@ -1,12 +1,14 @@
 import { strapiFetch } from '../../services/strapi';
+import { transformCarouselItem } from './transformer';
 import type {
   HomeCarouselQueryParams,
   StrapiHomeCarouselResponse,
+  HomeCarouselResponseDTO,
 } from './types';
 
 export async function handleHomeCarousel(
   params: HomeCarouselQueryParams,
-): Promise<StrapiHomeCarouselResponse> {
+): Promise<HomeCarouselResponseDTO> {
   const data = await strapiFetch<StrapiHomeCarouselResponse>(
     'home-carousels',
     {
@@ -19,15 +21,19 @@ export async function handleHomeCarousel(
         imagem: true,
         instituicao: true,
       },
-      sort: ['nome:ASC'],
     },
     params.noCache,
   );
 
-  return (
-    data ?? {
+  if (!data) {
+    return {
       data: [],
       meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
-    }
-  );
+    };
+  }
+
+  return {
+    data: data.data.map(transformCarouselItem),
+    meta: data.meta,
+  };
 }

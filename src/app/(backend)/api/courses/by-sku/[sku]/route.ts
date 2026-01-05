@@ -1,8 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import {
-  handleCourseDetailsFromStrapi,
-  handleCourseDetailsWithClientApi,
-} from '@/bff/handlers/courses';
+import { handleCourseDetailsFromStrapi } from '@/bff/handlers/courses';
 import type {
   CourseBySkuErrorDTO,
   CourseBySkuResponseDTO,
@@ -15,17 +12,10 @@ export async function GET(
 ) {
   try {
     const { sku } = await params;
-    const { searchParams } = new URL(request.url);
-
-    const institution = searchParams.get('institution');
-    const state = searchParams.get('state');
-    const city = searchParams.get('city');
-    const unit = searchParams.get('unit');
-    const admissionForm = searchParams.get('admissionForm');
 
     ensureBffInitialized();
     const strapiCourse = await handleCourseDetailsFromStrapi({
-      courseSku: sku,
+      courseId: sku,
     });
 
     if (!strapiCourse) {
@@ -37,26 +27,6 @@ export async function GET(
         },
         { status: 404 },
       );
-    }
-
-    if (institution && state && city && unit) {
-      const enrichedCourse = await handleCourseDetailsWithClientApi(
-        strapiCourse,
-        {
-          institution,
-          state,
-          city,
-          unit,
-          courseId: sku,
-          admissionForm: admissionForm || undefined,
-        },
-      );
-
-      return NextResponse.json<CourseBySkuResponseDTO>(enrichedCourse, {
-        headers: {
-          'Cache-Control': 'public, s-maxage=300, stale-while-revalidate=600',
-        },
-      });
     }
 
     return NextResponse.json<CourseBySkuResponseDTO>(strapiCourse, {

@@ -14,7 +14,7 @@ export async function GET(
     const { slug } = await params;
     ensureBffInitialized();
     const response = await handleCourseDetailsFromStrapi({
-      courseSku: slug,
+      courseId: slug,
     });
     if (!response) {
       return NextResponse.json<CoursesSlugErrorDTO>(

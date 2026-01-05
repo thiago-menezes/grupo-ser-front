@@ -1,3 +1,6 @@
+import type { Unit } from '../../transformers/strapi';
+import type { StrapiMeta, StrapiMedia } from '../courses/types-strapi';
+
 export type StrapiUnitsQueryParams = {
   institutionSlug: string;
 };
@@ -28,46 +31,33 @@ export type UnitByIdQueryParams = {
   unitId: number;
 };
 
-export type StrapiUnitsResponse = {
-  data: Array<{
+export type UnitResponseDTO = {
+  data: Unit[];
+  meta: StrapiMeta;
+};
+
+export type StrapiUnitItem = {
+  id: number;
+  documentId: string;
+  id_da_unidade: number | null;
+  nome: string | null;
+  endereco: string | null;
+  latitude: string | null;
+  longitude: string | null;
+  ids_dos_cursos?: unknown;
+  fotos?: StrapiMedia[];
+  instituicao?: {
     id: number;
     documentId: string;
-    id_unidade: number | null;
+    slug: string;
     nome: string | null;
-    endereco: string | null;
-    latitude: number;
-    longitude: number;
-    fotos?: Array<{
-      id: number;
-      documentId: string;
-      url: string;
-      name?: string;
-      alternativeText?: string | null;
-      caption?: string | null;
-      width?: number;
-      height?: number;
-      formats?: unknown;
-      hash?: string;
-      ext?: string;
-      mime?: string;
-      size?: number;
-    }>;
-    instituicao?: {
-      id: number;
-      documentId: string;
-      slug: string;
-      nome: string | null;
-    };
-    createdAt?: string;
-    updatedAt?: string;
-    publishedAt?: string | null;
-  }>;
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
   };
+  createdAt?: string;
+  updatedAt?: string;
+  publishedAt?: string | null;
+};
+
+export type StrapiUnitsResponse = {
+  data: StrapiUnitItem[];
+  meta: StrapiMeta;
 };

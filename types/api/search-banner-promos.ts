@@ -1,8 +1,7 @@
 export type SearchBannerPromoItemDTO = {
   id: number;
-  link: string | null;
-  imageUrl: string | null;
-  imageAlt: string | null;
+  link?: string | null;
+  image: string | null;
 };
 
 export type SearchBannerPromosResponseDTO = {

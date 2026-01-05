@@ -1,9 +1,14 @@
 import { strapiFetch } from '../../services/strapi';
-import type { EMecQueryParams, StrapiEMecResponse } from './types';
+import { transformEMec } from './transformer';
+import type {
+  EMecQueryParams,
+  StrapiEMecResponse,
+  EMecResponseDTO,
+} from './types';
 
 export async function handleEMec(
   params: EMecQueryParams,
-): Promise<StrapiEMecResponse> {
+): Promise<EMecResponseDTO> {
   const data = await strapiFetch<StrapiEMecResponse>(
     'e-mecs',
     {
@@ -20,10 +25,15 @@ export async function handleEMec(
     params.noCache,
   );
 
-  return (
-    data ?? {
+  if (!data) {
+    return {
       data: [],
       meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
-    }
-  );
+    };
+  }
+
+  return {
+    data: data.data.map(transformEMec),
+    meta: data.meta,
+  };
 }

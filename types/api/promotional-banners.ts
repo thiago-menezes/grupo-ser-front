@@ -1,8 +1,7 @@
 export type PromotionalBannerItemDTO = {
   id: number;
   link?: string | null;
-  imageUrl: string | null;
-  imageAlt?: string | null;
+  image: string | null;
 };
 
 export type PromotionalBannersResponseDTO = {

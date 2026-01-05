@@ -1,3 +1,5 @@
+import type { StrapiMeta, StrapiMedia } from '../courses/types-strapi';
+
 export type HomeCarouselQueryParams = {
   institutionSlug: string;
   noCache?: boolean;
@@ -8,25 +10,27 @@ export type StrapiHomeCarouselItem = {
   documentId: string;
   nome: string;
   link?: string | null;
-  imagem?: {
-    id: number;
-    url: string;
-    alternativeText?: string | null;
-  } | null;
+  imagem?: StrapiMedia | null;
   instituicao?: {
     id: number;
     slug: string;
   } | null;
 };
 
+export type CarouselItemDTO = {
+  id: number;
+  documentId: string;
+  name: string;
+  link?: string | null;
+  image?: string | null;
+};
+
+export type HomeCarouselResponseDTO = {
+  data: CarouselItemDTO[];
+  meta: StrapiMeta;
+};
+
 export type StrapiHomeCarouselResponse = {
   data: StrapiHomeCarouselItem[];
-  meta: {
-    pagination?: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
+  meta: StrapiMeta;
 };

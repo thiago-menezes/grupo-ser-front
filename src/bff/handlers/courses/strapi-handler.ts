@@ -1,31 +1,33 @@
-import type { CourseDetails } from '@/features/course-details/types';
+import type { CourseDetailsDTO } from 'types/api/course-details';
 import { strapiFetch } from '../../services/strapi';
 import { transformStrapiCourse } from '../../transformers/course-strapi';
 import type { StrapiCourseResponse } from './types-strapi';
 
 export type CourseDetailsParams = {
   courseId?: string;
-  courseSku?: string;
 };
 
 export async function handleCourseDetailsFromStrapi(
   params: CourseDetailsParams,
-): Promise<CourseDetails | null> {
+): Promise<CourseDetailsDTO | null> {
   const courseId = params.courseId?.trim();
-  const courseSku = params.courseSku?.trim();
 
-  if (!courseId && !courseSku) {
+  if (!courseId) {
     return null;
   }
 
   const courseResponse = await strapiFetch<StrapiCourseResponse>('courses', {
     filters: {
-      ...(courseId
-        ? { id_do_curso: { $eq: courseId } }
-        : { sku: { $eq: courseSku } }),
+      id_do_curso: { $eq: courseId },
     },
-    populate: '*',
-    params: { publicationState: 'preview' },
+    populate: [
+      'capa',
+      'instituicao',
+      'coordenadores',
+      'corpo_de_docentes',
+      'faqs',
+      'modalidades',
+    ],
   });
 
   if (!courseResponse?.data || courseResponse.data.length === 0) {
@@ -33,24 +35,5 @@ export async function handleCourseDetailsFromStrapi(
   }
 
   const strapiCourse = courseResponse.data[0];
-  const courseDetails = transformStrapiCourse(strapiCourse);
-
-  if (strapiCourse.projeto_pedagogico) {
-    courseDetails.pedagogicalProject = {
-      content: strapiCourse.projeto_pedagogico,
-    };
-  }
-
-  if (strapiCourse.areas_atuacao && strapiCourse.areas_atuacao.length > 0) {
-    courseDetails.jobMarketAreas = strapiCourse.areas_atuacao;
-  }
-
-  if (
-    strapiCourse.faixas_salariais &&
-    strapiCourse.faixas_salariais.length > 0
-  ) {
-    courseDetails.salaryRanges = strapiCourse.faixas_salariais;
-  }
-
-  return courseDetails;
+  return transformStrapiCourse(strapiCourse);
 }

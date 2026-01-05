@@ -4,8 +4,9 @@ export type UnitDTO = {
   unitId: number | null;
   name: string;
   address: string;
-  latitude: number;
-  longitude: number;
+  latitude: string | null;
+  longitude: string | null;
+  courseIds?: unknown;
   photos?: unknown[];
   institution?: {
     id: number;

@@ -1,12 +1,14 @@
 import { strapiFetch } from '../../services/strapi';
+import { transformAreaInteresse } from './transformer';
 import type {
   AreasInteresseQueryParams,
   StrapiAreasInteresseResponse,
+  AreasInteresseResponseDTO,
 } from './types';
 
 export async function handleAreasInteresse(
   params: AreasInteresseQueryParams,
-): Promise<StrapiAreasInteresseResponse> {
+): Promise<AreasInteresseResponseDTO> {
   const data = await strapiFetch<StrapiAreasInteresseResponse>(
     'areas-de-interesses',
     {
@@ -24,10 +26,15 @@ export async function handleAreasInteresse(
     params.noCache,
   );
 
-  return (
-    data ?? {
+  if (!data) {
+    return {
       data: [],
       meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
-    }
-  );
+    };
+  }
+
+  return {
+    data: data.data.map(transformAreaInteresse),
+    meta: data.meta,
+  };
 }

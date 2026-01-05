@@ -1,12 +1,11 @@
-export type EMecItemDTO = {
+export type EMecDTO = {
   id: number;
   link?: string | null;
-  qrcodeUrl: string | null;
-  qrcodeAlt?: string | null;
+  qrCode: string | null;
 };
 
 export type EMecResponseDTO = {
-  data: EMecItemDTO[];
+  data: EMecDTO[];
   meta: {
     pagination?: {
       page: number;

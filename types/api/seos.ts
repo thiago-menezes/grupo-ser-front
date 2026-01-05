@@ -1,15 +1,11 @@
+import type { StrapiMeta } from '@/bff/handlers/courses/types-strapi';
 import type { StrapiSeo } from '@/features/seo/types';
 
+export type SeoDTO = StrapiSeo; // For now, StrapiSeo is already mostly English
+
 export type SeosResponseDTO = {
-  data: StrapiSeo[];
-  meta: {
-    pagination?: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
+  data: SeoDTO[];
+  meta: StrapiMeta;
 };
 
 export type SeosErrorDTO = {

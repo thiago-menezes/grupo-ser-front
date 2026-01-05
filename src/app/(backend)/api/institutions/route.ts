@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { transformInstitution } from '@/bff/transformers/strapi';
+import { handleInstitutionBySlug } from '@/bff/handlers';
 import type {
   InstitutionsErrorDTO,
   InstitutionsResponseDTO,
 } from '@/types/api/institutions';
+import { ensureBffInitialized } from '../services/bff';
 
 export async function GET(request: NextRequest) {
   try {
@@ -17,36 +18,15 @@ export async function GET(request: NextRequest) {
       );
     }
 
-    // Fetch from Strapi
-    const strapiUrl = process.env.STRAPI_URL || 'http://localhost:1337';
-    const strapiToken = process.env.STRAPI_TOKEN;
+    ensureBffInitialized();
+    const institution = await handleInstitutionBySlug({ slug });
 
-    const response = await fetch(
-      `${strapiUrl}/api/institutions?filters[slug][$eq]=${slug}&populate=*`,
-      {
-        headers: {
-          'Content-Type': 'application/json',
-          ...(strapiToken ? { Authorization: `Bearer ${strapiToken}` } : {}),
-        },
-        cache: 'no-store',
-      },
-    );
-
-    if (!response.ok) {
-      throw new Error(`Strapi API error: ${response.status}`);
-    }
-
-    const data = await response.json();
-
-    if (!data.data || data.data.length === 0) {
+    if (!institution) {
       return NextResponse.json<InstitutionsErrorDTO>(
         { error: 'Institution not found' },
         { status: 404 },
       );
     }
-
-    const strapiInstitution = data.data[0];
-    const institution = transformInstitution(strapiInstitution);
 
     return NextResponse.json<InstitutionsResponseDTO>({ institution });
   } catch (error) {

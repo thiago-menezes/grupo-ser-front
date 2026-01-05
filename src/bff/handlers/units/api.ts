@@ -11,16 +11,6 @@ export type UnitsResponse = {
   Unidades: Unit[];
 };
 
-export type UnitsNewResponse = {
-  data: Unit[];
-};
-
-export type UnitsQueryParams = {
-  marca?: string;
-  estado?: string;
-  cidade?: string;
-};
-
 export async function fetchUnits(
   institution: string,
   state: string,
@@ -40,16 +30,4 @@ export async function fetchUnitsByCourse(
   const { baseUrl } = getClientApiConfig();
   const url = `${baseUrl}/p/${institution.toLowerCase()}/${state.toLowerCase()}/${encodeURIComponent(city.toLowerCase())}/cursos/${courseId}/unidades`;
   return clientApiFetch<UnitsResponse>(url);
-}
-
-export async function fetchUnitsNew(
-  params: UnitsQueryParams,
-): Promise<UnitsNewResponse> {
-  const { baseUrl } = getClientApiConfig();
-  const searchParams = new URLSearchParams();
-  if (params.marca) searchParams.append('marca', params.marca);
-  if (params.estado) searchParams.append('estado', params.estado);
-  if (params.cidade) searchParams.append('cidade', params.cidade);
-  const url = `${baseUrl}/cursos/unidades?${searchParams.toString()}`;
-  return clientApiFetch<UnitsNewResponse>(url);
 }

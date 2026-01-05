@@ -1,26 +1,13 @@
-import { Button, Text, View } from 'reshaped';
-import { Icon } from '@/components';
+import { Text, View } from 'reshaped';
 import type { CourseDetails } from '../types';
 import styles from './styles.module.scss';
 
 export type CourseInfoProps = {
   course: CourseDetails;
-  selectedUnitId: number;
-  onUnitClick: (unitId: number) => void;
   onViewCurriculum: () => void;
 };
 
-export function CourseInfo({
-  course,
-  selectedUnitId,
-  onUnitClick,
-  onViewCurriculum,
-}: CourseInfoProps) {
-  // Get first offering for default info
-  const firstOffering = course.offerings[0];
-  const unit =
-    course.units.find((u) => u.id === selectedUnitId) || course.units[0];
-
+export function CourseInfo({ course, onViewCurriculum }: CourseInfoProps) {
   return (
     <View className={styles.info}>
       <View className={styles.header}>
@@ -33,36 +20,23 @@ export function CourseInfo({
           >
             {course.name}
           </Text>
-          <View className={styles.meta}>
-            <View className={styles.metaItem}>
-              <Icon name="school" size={16} aria-hidden="true" />
-              <Text variant="body-3">{course.type}</Text>
+          {course.institution && (
+            <View className={styles.meta}>
+              <Text variant="body-3" color="neutral-faded">
+                {course.institution.name}
+              </Text>
             </View>
-            {firstOffering && (
-              <View className={styles.metaItem}>
-                <Icon name="clock" size={16} aria-hidden="true" />
-                <Text variant="body-3">{firstOffering.duration}</Text>
-              </View>
-            )}
-            {unit && (
-              <button
-                type="button"
-                className={styles.metaItemClickable}
-                onClick={() => onUnitClick(unit.id)}
-              >
-                <Icon name="building" size={16} aria-hidden="true" />
-                <Text variant="body-3">{unit.name}</Text>
-              </button>
-            )}
-          </View>
+          )}
         </View>
-        <Button
-          onClick={onViewCurriculum}
-          variant="outline"
-          className={styles.curriculumButton}
-        >
-          Ver grade curricular
-        </Button>
+        {!!course.curriculumGrid && (
+          <button
+            type="button"
+            onClick={onViewCurriculum}
+            className={styles.curriculumButton}
+          >
+            Ver grade curricular
+          </button>
+        )}
       </View>
     </View>
   );

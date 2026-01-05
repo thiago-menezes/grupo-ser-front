@@ -28,10 +28,9 @@ export async function GET(request: NextRequest) {
     const transformedData: HomeCarouselResponseDTO = {
       data: strapiData.data.map((item) => ({
         id: item.id,
-        name: item.nome || null,
+        name: item.name,
         link: item.link || null,
-        imageUrl: item.imagem?.url || null,
-        imageAlt: item.imagem?.alternativeText || null,
+        image: item.image || null,
       })),
       meta: strapiData.meta,
     };

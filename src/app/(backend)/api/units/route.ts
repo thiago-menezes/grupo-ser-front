@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handleUnits, handleUnitById } from '@/bff/handlers';
-import { transformUnit } from '@/bff/transformers/strapi';
 import type { UnitsErrorDTO, UnitsResponseDTO } from '@/types/api/units';
 import { ensureBffInitialized } from '../services/bff';
 
@@ -37,8 +36,15 @@ export async function GET(request: NextRequest) {
     }
 
     const transformedData: UnitsResponseDTO = {
-      data: strapiData.data.map(transformUnit),
-      meta: strapiData.meta,
+      data: strapiData.data,
+      meta: {
+        pagination: {
+          page: strapiData.meta.pagination?.page || 1,
+          pageSize: strapiData.meta.pagination?.pageSize || 0,
+          pageCount: strapiData.meta.pagination?.pageCount || 0,
+          total: strapiData.meta.pagination?.total || 0,
+        },
+      },
     };
 
     return NextResponse.json<UnitsResponseDTO>(transformedData, {

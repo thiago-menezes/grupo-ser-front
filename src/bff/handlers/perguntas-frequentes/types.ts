@@ -1,3 +1,5 @@
+import type { StrapiMeta } from '../courses/types-strapi';
+
 export type PerguntasFrequentesQueryParams = {
   institutionSlug: string;
   noCache?: boolean;
@@ -19,14 +21,19 @@ export type StrapiPerguntaFrequente = {
   } | null;
 };
 
+export type FaqDTO = {
+  id: number;
+  documentId: string;
+  question: string;
+  answer: string;
+};
+
+export type PerguntasFrequentesResponseDTO = {
+  data: FaqDTO[];
+  meta: StrapiMeta;
+};
+
 export type StrapiPerguntasFrequentesResponse = {
   data: StrapiPerguntaFrequente[];
-  meta: {
-    pagination: {
-      page: number;
-      pageSize: number;
-      pageCount: number;
-      total: number;
-    };
-  };
+  meta: StrapiMeta;
 };

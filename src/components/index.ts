@@ -11,3 +11,4 @@ export * from './loading';
 export * from './markdown-content';
 export * from './page-not-found';
 export * from './pagination';
+export * from './rich-text-renderer';

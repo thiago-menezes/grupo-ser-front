@@ -87,8 +87,8 @@ export function Footer({ content = DEFAULT_FOOTER_CONTENT }: FooterProps) {
             <EmecBadge
               href={emecData?.link ?? ''}
               title={badge.title}
-              qrcodeUrl={emecData?.qrcodeUrl ?? ''}
-              qrcodeAlt={emecData?.qrcodeAlt ?? 'QR Code e-MEC'}
+              qrcodeUrl={emecData?.qrCode ?? ''}
+              qrcodeAlt={badge.title || 'QR Code e-MEC'}
             />
           </div>
         </div>

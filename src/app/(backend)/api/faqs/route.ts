@@ -1,16 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handlePerguntasFrequentes } from '@/bff/handlers/perguntas-frequentes';
-import type { StrapiPerguntaFrequente } from '@/bff/handlers/perguntas-frequentes/types';
 import type { FaqsErrorDTO, FaqsResponseDTO } from '@/types/api/faqs';
 import { ensureBffInitialized } from '../services/bff';
-
-function transformFaqToDTO(faq: StrapiPerguntaFrequente) {
-  return {
-    id: faq.id,
-    question: faq.pergunta,
-    answer: faq.resposta,
-  };
-}
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -31,8 +22,9 @@ export async function GET(request: NextRequest) {
       noCache,
     });
 
+    // strapiData already contains English DTOs due to the handler's transformer
     const transformedData: FaqsResponseDTO = {
-      data: strapiData.data.map(transformFaqToDTO),
+      data: strapiData.data,
       meta: strapiData.meta,
     };
 

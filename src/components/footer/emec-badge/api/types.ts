@@ -1,1 +1,1 @@
-export type { EMecItemDTO, EMecResponseDTO } from '@/types/api/e-mecs';
+export type { EMecDTO, EMecResponseDTO } from '@/types/api/e-mecs';

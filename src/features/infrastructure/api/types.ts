@@ -52,8 +52,9 @@ export type StrapiUnit = {
   documentId: string;
   name: string;
   address: string;
-  latitude: number;
-  longitude: number;
+  latitude: string | null;
+  longitude: string | null;
+  courseIds?: unknown;
   createdAt: string;
   updatedAt: string;
   publishedAt: string | null;
@@ -76,14 +77,14 @@ export type StrapiUnitsResponse = {
 /**
  * Client Units Response (from BFF)
  */
-export interface ClientUnit {
+export type ClientUnit = {
   id: number;
   name: string;
   state: string;
   city: string;
-}
+};
 
-export interface ClientUnitsResponse {
+export type ClientUnitsResponse = {
   data: ClientUnit[];
   meta: {
     total: number;
@@ -91,4 +92,4 @@ export interface ClientUnitsResponse {
     state: string;
     city: string;
   };
-}
+};

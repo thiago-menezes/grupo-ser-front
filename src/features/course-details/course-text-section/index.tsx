@@ -1,10 +1,10 @@
 import { Divider, Text, View } from 'reshaped';
-import { MarkdownContent } from '@/components';
+import { RichTextRenderer } from '@/components';
 import styles from './styles.module.scss';
 
 export type CourseTextSectionProps = {
   title: string;
-  content: string;
+  content: unknown;
 };
 
 export function CourseTextSection({ title, content }: CourseTextSectionProps) {
@@ -15,7 +15,7 @@ export function CourseTextSection({ title, content }: CourseTextSectionProps) {
         {title}
       </Text>
 
-      <MarkdownContent content={content} className={styles.content} />
+      <RichTextRenderer content={content} className={styles.content} />
     </View>
   );
 }

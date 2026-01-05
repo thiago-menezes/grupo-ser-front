@@ -1,3 +1,3 @@
-export interface MediaQueryParams {
+export type MediaQueryParams = {
   path: string[];
-}
+};

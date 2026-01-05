@@ -1,30 +1,20 @@
 import { strapiFetch } from '../../services/strapi';
+import { transformUnit } from '../../transformers/strapi';
 import type {
   StrapiUnitsResponse,
   StrapiUnitsQueryParams,
   UnitByIdQueryParams,
+  UnitResponseDTO,
 } from './types';
 
-const emptyUnitsResponse: StrapiUnitsResponse = {
+const emptyUnitsResponse: UnitResponseDTO = {
   data: [],
   meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
 };
 
 export async function handleUnits(
   params: StrapiUnitsQueryParams,
-): Promise<StrapiUnitsResponse> {
-  const institutionCheck = await strapiFetch<{
-    data: Array<{ id: number; slug: string; nome: string }>;
-  }>('institutions', {
-    filters: {
-      slug: { $eq: params.institutionSlug },
-    },
-  });
-
-  if (!institutionCheck?.data || institutionCheck.data.length === 0) {
-    return emptyUnitsResponse;
-  }
-
+): Promise<UnitResponseDTO> {
   const units = await strapiFetch<StrapiUnitsResponse>('units', {
     filters: {
       instituicao: {
@@ -34,15 +24,20 @@ export async function handleUnits(
     populate: ['instituicao', 'fotos'],
   });
 
-  return units ?? emptyUnitsResponse;
+  if (!units) return emptyUnitsResponse;
+
+  return {
+    data: units.data.map(transformUnit),
+    meta: units.meta,
+  };
 }
 
 export async function handleUnitById(
   params: UnitByIdQueryParams,
-): Promise<StrapiUnitsResponse> {
+): Promise<UnitResponseDTO> {
   const units = await strapiFetch<StrapiUnitsResponse>('units', {
     filters: {
-      id_unidade: { $eq: params.unitId },
+      id_da_unidade: { $eq: params.unitId },
       instituicao: {
         slug: { $eq: params.institutionSlug },
       },
@@ -50,5 +45,10 @@ export async function handleUnitById(
     populate: ['instituicao', 'fotos'],
   });
 
-  return units ?? emptyUnitsResponse;
+  if (!units) return emptyUnitsResponse;
+
+  return {
+    data: units.data.map(transformUnit),
+    meta: units.meta,
+  };
 }

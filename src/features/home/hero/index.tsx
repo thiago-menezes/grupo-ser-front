@@ -41,8 +41,8 @@ export function HeroSection() {
     }
     return carouselItems
       .map((item) => ({
-        image: item.imageUrl || '',
-        alt: item.imageAlt || '',
+        image: item.image || '',
+        alt: item.name || '',
         link: item.link || '',
       }))
       .filter((item) => Boolean(item.image));

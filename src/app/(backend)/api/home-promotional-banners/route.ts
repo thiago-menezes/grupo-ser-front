@@ -29,10 +29,16 @@ export async function GET(request: NextRequest) {
       data: strapiData.data.map((item) => ({
         id: item.id,
         link: item.link || null,
-        imageUrl: item.imagem?.url || null,
-        imageAlt: item.imagem?.alternativeText || null,
+        image: item.image || null,
       })),
-      meta: strapiData.meta,
+      meta: {
+        pagination: {
+          page: strapiData.meta.pagination?.page || 1,
+          pageSize: strapiData.meta.pagination?.pageSize || 0,
+          pageCount: strapiData.meta.pagination?.pageCount || 0,
+          total: strapiData.meta.pagination?.total || 0,
+        },
+      },
     };
 
     const cacheControl =

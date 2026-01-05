@@ -1,13 +1,21 @@
 import { clsx } from 'clsx';
 import Link from 'next/link';
 import { Button, Text } from 'reshaped';
+import { ModalityDTO } from '@/bff/handlers/modalidades/types';
 import { Icon } from '@/components';
-import { MOCK_MODALITIES } from './mocks';
+import { useCurrentInstitution } from '@/hooks';
+import { useModalities } from './api';
 import styles from './styles.module.scss';
 
 export function ModalitiesSection() {
-  const modalities = MOCK_MODALITIES;
+  const { institutionId } = useCurrentInstitution();
+  const { data: modalitiesResponse, isLoading } = useModalities(institutionId);
+  const modalities = modalitiesResponse?.data ?? [];
   const sectionClassName = clsx(styles.section);
+
+  if (isLoading || modalities.length === 0) {
+    return null;
+  }
 
   return (
     <section
@@ -26,7 +34,7 @@ export function ModalitiesSection() {
         </div>
 
         <div className={styles.cards} role="list">
-          {modalities.map((modality) => (
+          {modalities.map((modality: ModalityDTO) => (
             <article key={modality.id} className={styles.card} role="listitem">
               <div className={styles.cardHeader}>
                 <Icon name={modality.icon} size={24} className={styles.icon} />
@@ -39,7 +47,7 @@ export function ModalitiesSection() {
                 {modality.description}
               </Text>
 
-              <Link href={`/${modality.ctaHref}`}>
+              <Link href={modality.ctaHref}>
                 <Button
                   variant="ghost"
                   color="primary"

@@ -1,9 +1,9 @@
 import { Divider, Text, View } from 'reshaped';
-import { MarkdownContent } from '@/components';
+import { RichTextRenderer } from '@/components';
 import styles from './styles.module.scss';
 
 export type CourseAboutProps = {
-  description: string;
+  description: unknown;
 };
 
 export function CourseAbout({ description }: CourseAboutProps) {
@@ -14,7 +14,7 @@ export function CourseAbout({ description }: CourseAboutProps) {
         Sobre o curso
       </Text>
 
-      <MarkdownContent content={description} className={styles.description} />
+      <RichTextRenderer content={description} className={styles.description} />
     </View>
   );
 }

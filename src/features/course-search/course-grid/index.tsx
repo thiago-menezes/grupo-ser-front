@@ -77,7 +77,7 @@ export function CourseGrid() {
               ))}
             </View>
 
-            {bannerItem?.imageUrl && !isBannerLoading && (
+            {bannerItem?.image && !isBannerLoading && (
               <View className={styles.bannerContainer}>
                 <Link
                   href={bannerItem?.link ?? '#'}
@@ -85,8 +85,8 @@ export function CourseGrid() {
                   rel="noopener noreferrer"
                 >
                   <Image
-                    src={getMediaUrl(bannerItem.imageUrl)}
-                    alt={bannerItem?.imageAlt ?? 'Banner'}
+                    src={getMediaUrl(bannerItem.image)}
+                    alt={'Banner promocional'}
                     fill
                   />
                 </Link>

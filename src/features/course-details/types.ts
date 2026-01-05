@@ -1,9 +1,9 @@
 export type {
-  CourseAdmissionFormDTO,
   CourseDetailsDTO as CourseDetails,
+  CourseAdmissionFormDTO,
   CourseEnrollmentDTO,
-  CourseEnrollmentPaymentOptionDTO,
-  CourseEnrollmentPaymentTypeDTO,
-  CourseFaq,
-  CourseShiftDTO,
+  CourseTeacherDTO,
+  CourseSalaryRangeDTO,
+  CourseFAQDTO as CourseFaq,
+  CourseUnitDTO as CourseUnit,
 } from 'types/api/course-details';

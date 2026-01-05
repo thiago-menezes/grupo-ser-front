@@ -1,46 +1,10 @@
 import { NextRequest, NextResponse } from 'next/server';
 import { handleAreasInteresse } from '@/bff/handlers/areas-interesse';
 import type {
-  StrapiAreaInteresse,
-  StrapiRichTextBlock,
-} from '@/bff/handlers/areas-interesse/types';
-import type {
   AreasOfInterestErrorDTO,
   AreasOfInterestResponseDTO,
 } from '@/types/api/areas-of-interest';
-import { slugify } from '@/utils';
 import { ensureBffInitialized } from '../services/bff';
-
-function extractCoursesFromRichText(subareas: StrapiRichTextBlock[]): string[] {
-  if (!subareas || !Array.isArray(subareas)) {
-    return [];
-  }
-
-  return subareas
-    .filter((block) => block.type === 'paragraph')
-    .flatMap((block) =>
-      block.children
-        .filter((child) => child.type === 'text' && child.text?.trim())
-        .map((child) => child.text.trim()),
-    );
-}
-
-function transformAreaToDTO(area: StrapiAreaInteresse) {
-  const courseNames = extractCoursesFromRichText(area.subareas || []);
-
-  return {
-    id: area.id,
-    title: area.nome,
-    slug: slugify(area.nome),
-    imageUrl: area.capa?.url || null,
-    imageAlt: area.capa?.alternativeText || null,
-    courses: courseNames.map((name) => ({
-      id: slugify(name),
-      name,
-      slug: slugify(name),
-    })),
-  };
-}
 
 export async function GET(request: NextRequest) {
   const searchParams = request.nextUrl.searchParams;
@@ -62,7 +26,14 @@ export async function GET(request: NextRequest) {
     });
 
     const transformedData: AreasOfInterestResponseDTO = {
-      data: strapiData.data.map(transformAreaToDTO),
+      data: strapiData.data.map((item) => ({
+        id: item.id,
+        title: item.name,
+        slug: item.slug,
+        imageUrl: item.image || null,
+        imageAlt: 'Capa da área de interesse',
+        courses: item.courses,
+      })),
       meta: strapiData.meta,
     };
 

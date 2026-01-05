@@ -21,8 +21,8 @@ export function PromotionalBanners({
   const { data: bannersResponse, isLoading } =
     usePromotionalBanners(institutionSlug);
   const banners = (bannersResponse?.data ?? []).filter(
-    (banner): banner is PromotionalBannerItemDTO & { imageUrl: string } =>
-      Boolean(banner.imageUrl),
+    (banner): banner is PromotionalBannerItemDTO & { image: string } =>
+      Boolean(banner.image),
   );
   const [cardWidth, setCardWidth] = useState(294); // Default mobile width
 
@@ -55,8 +55,8 @@ export function PromotionalBanners({
           {banners.map((banner) => {
             const imageElement = (
               <Image
-                src={getMediaUrl(banner.imageUrl)}
-                alt={banner.imageAlt || 'Banner promocional'}
+                src={getMediaUrl(banner.image)}
+                alt={'Banner promocional'}
                 className={styles.bannerImage}
                 priority
                 width={200}

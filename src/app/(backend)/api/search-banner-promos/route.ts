@@ -29,8 +29,7 @@ export async function GET(request: NextRequest) {
       data: strapiData.data.map((item) => ({
         id: item.id,
         link: item.link || null,
-        imageUrl: item.imagem?.url || null,
-        imageAlt: item.imagem?.alternativeText || null,
+        image: item.image || null,
       })),
       meta: strapiData.meta,
     };

@@ -26,8 +26,7 @@ export async function GET(request: NextRequest) {
       data: strapiData.data.map((item) => ({
         id: item.id,
         link: item.link || null,
-        qrcodeUrl: item.qrcode?.url || null,
-        qrcodeAlt: item.qrcode?.alternativeText || 'QR Code e-MEC',
+        qrCode: item.qrCode || null,
       })),
       meta: strapiData.meta,
     };

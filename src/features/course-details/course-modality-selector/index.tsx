@@ -17,7 +17,7 @@ const MODALITY_LABELS: Record<string, string> = {
 };
 
 export function CourseModalitySelector({
-  modalities,
+  modalities = [],
   selectedModalityId,
   onSelectModality,
 }: CourseModalitySelectorProps) {
@@ -35,32 +35,34 @@ export function CourseModalitySelector({
       </Text>
 
       <View className={styles.modalityGrid}>
-        {modalities.map((modality) => {
-          const isSelected = selectedModalityId === modality.id;
-          const isDisabled = modalities.length === 1;
-          return (
-            <button
-              key={modality.id}
-              type="button"
-              className={`${styles.modalityButton} ${
-                isSelected ? styles.selected : ''
-              } ${isDisabled ? styles.disabled : ''}`}
-              aria-label={MODALITY_LABELS[modality.slug] || modality.name}
-              aria-pressed={isSelected}
-              disabled={isDisabled}
-              onClick={() => onSelectModality(modality.id)}
-            >
-              <Text
-                as="span"
-                variant="body-2"
-                weight="bold"
-                className={styles.modalityLabel}
+        {(modalities || []).map(
+          (modality: { id: number; name: string; slug: string }) => {
+            const isSelected = selectedModalityId === modality.id;
+            const isDisabled = modalities.length === 1;
+            return (
+              <button
+                key={modality.id}
+                type="button"
+                className={`${styles.modalityButton} ${
+                  isSelected ? styles.selected : ''
+                } ${isDisabled ? styles.disabled : ''}`}
+                aria-label={MODALITY_LABELS[modality.slug] || modality.name}
+                aria-pressed={isSelected}
+                disabled={isDisabled}
+                onClick={() => onSelectModality(modality.id)}
               >
-                {MODALITY_LABELS[modality.slug] || modality.name}
-              </Text>
-            </button>
-          );
-        })}
+                <Text
+                  as="span"
+                  variant="body-2"
+                  weight="bold"
+                  className={styles.modalityLabel}
+                >
+                  {MODALITY_LABELS[modality.slug] || modality.name}
+                </Text>
+              </button>
+            );
+          },
+        )}
       </View>
     </View>
   );
