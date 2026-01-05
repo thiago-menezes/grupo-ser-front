@@ -1,10 +1,7 @@
 import { useMutation } from '@tanstack/react-query';
 import type { CourseSearchQueryDTO } from './types';
 
-async function submitQuickSearch(
-  data: CourseSearchQueryDTO,
-  institutionSlug: string,
-) {
+async function submitQuickSearch(data: CourseSearchQueryDTO) {
   const params = new URLSearchParams();
 
   if (data.city) params.append('city', data.city);
@@ -15,14 +12,13 @@ async function submitQuickSearch(
 
   return {
     success: true,
-    searchUrl: `/${institutionSlug}/cursos?${params.toString()}`,
+    searchUrl: `/cursos?${params.toString()}`,
   };
 }
 
-export function useQuickSearchMutation(institutionSlug: string) {
+export function useQuickSearchMutation() {
   return useMutation({
-    mutationFn: (data: CourseSearchQueryDTO) =>
-      submitQuickSearch(data, institutionSlug),
+    mutationFn: (data: CourseSearchQueryDTO) => submitQuickSearch(data),
     retry: 1,
   });
 }

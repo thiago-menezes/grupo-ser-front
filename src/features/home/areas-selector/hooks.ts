@@ -15,7 +15,7 @@ export function useAreaSelector() {
       area: area.title,
       course: courseName,
     });
-    router.push(`/${institutionId}/cursos?${params.toString()}`);
+    router.push(`/cursos?${params.toString()}`);
   };
 
   const handleAllCourses = (areaName: string) => {
@@ -23,7 +23,7 @@ export function useAreaSelector() {
     const params = new URLSearchParams({
       area: areaName,
     });
-    router.push(`/${institutionId}/cursos?${params.toString()}`);
+    router.push(`/cursos?${params.toString()}`);
   };
 
   return {

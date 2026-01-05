@@ -14,7 +14,7 @@ import type { FooterProps } from './types';
 export type { FooterProps } from './types';
 
 export function Footer({ content = DEFAULT_FOOTER_CONTENT }: FooterProps) {
-  const { institutionId, institutionName } = useCurrentInstitution();
+  const { institutionId } = useCurrentInstitution();
   const { socialLinks, sections, badge } = content;
   const { data: emecResponse } = useEMec(institutionId);
 
@@ -27,7 +27,7 @@ export function Footer({ content = DEFAULT_FOOTER_CONTENT }: FooterProps) {
           <div className={styles.brandBlock}>
             <Image
               src={`/logos/${institutionId}/dark.svg`}
-              alt={`Logo ${institutionName}`}
+              alt="Logo"
               className={styles.logo}
               width={190}
               height={40}

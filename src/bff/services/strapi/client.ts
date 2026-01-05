@@ -132,7 +132,7 @@ export async function strapiFetch<T>(
   endpoint: string,
   options?: StrapiFetchOptions,
   noCache?: boolean,
-): Promise<T> {
+): Promise<T | null> {
   const { baseUrl, token, timeout = 10000 } = getConfig();
   const query = buildQuery(options);
   const url = `${baseUrl}/api/${endpoint}${query}`;
@@ -154,19 +154,21 @@ export async function strapiFetch<T>(
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(
-        `Strapi error: ${response.status} ${response.statusText}. ${errorText}`,
+      console.warn(
+        `Strapi unavailable: ${response.status} ${response.statusText} for ${endpoint}`,
       );
+      return null;
     }
 
     return response.json() as Promise<T>;
   } catch (error) {
     clearTimeout(timeoutId);
-    if (error instanceof Error && error.name === 'AbortError') {
-      throw new Error(`Strapi timeout after ${timeout}ms: ${url}`);
+    if (error instanceof Error) {
+      console.warn(
+        `Strapi connection failed for ${endpoint}: ${error.message}`,
+      );
     }
-    throw error;
+    return null;
   }
 }
 

@@ -26,7 +26,7 @@ export const MainNav = ({
     if (city) {
       params.append('city', city);
     }
-    return `/${institutionId}/cursos?${params.toString()}`;
+    return `/cursos?${params.toString()}`;
   };
 
   const buildPostgraduateUrl = () => {
@@ -35,14 +35,14 @@ export const MainNav = ({
     if (city) {
       params.append('city', city);
     }
-    return `/${institutionId}/cursos?${params.toString()}`;
+    return `/cursos?${params.toString()}`;
   };
 
   return (
     <div className={styles.mainNav}>
       <div className={styles.container}>
         <div className={styles.mainNavContent}>
-          <Link href={`/${institutionId}`} className={styles.logo}>
+          <Link href="/" className={styles.logo}>
             <Image
               src={`/logos/${institutionId}/${isDarkMode ? 'dark' : 'light'}.svg`}
               alt={`Logo ${institutionName}`}
@@ -138,7 +138,7 @@ export const MainNav = ({
               </DropdownMenu>
             </nav>
 
-            <Link href={`/${institutionId}/cursos`}>
+            <Link href="/cursos">
               <Button size="large" className={mainNavStyles.secondaryButton}>
                 Inscreva-se
               </Button>

@@ -115,7 +115,7 @@ export function GeoCoursesSection({
 
       const queryString = queryParams.toString();
       router.push(
-        `/${institutionId}/cursos/${course.courseId}${queryString ? `?${queryString}` : ''}`,
+        `/cursos/${course.courseId}${queryString ? `?${queryString}` : ''}`,
       );
     },
     [router, institutionId, city, state],
@@ -165,7 +165,7 @@ export function GeoCoursesSection({
               )}
             </div>
           </div>
-          <Link href={`/${institutionId}/cursos`}>
+          <Link href="/cursos">
             <Button
               variant="ghost"
               aria-label="Ver todos os cursos disponíveis"

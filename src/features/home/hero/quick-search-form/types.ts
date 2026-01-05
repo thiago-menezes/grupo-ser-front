@@ -1,5 +1,4 @@
 export type QuickSearchFormProps = {
-  institutionSlug: string;
   onSubmit?: (data: QuickSearchFormData) => void;
 };
 

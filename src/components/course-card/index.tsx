@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import { Button } from 'reshaped';
-import { useCurrentInstitution } from '@/hooks/useInstitution';
 import { toProperCase } from '@/utils';
 import { Icon } from '../icon';
 import { MODALITY_LABELS } from './constants';
@@ -8,8 +7,6 @@ import styles from './styles.module.scss';
 import type { CourseCardProps } from './types';
 
 export function CourseCard({ course, className }: CourseCardProps) {
-  const { institutionSlug } = useCurrentInstitution();
-
   // Build course URL with actual course data
   const params = new URLSearchParams();
   if (course.campusCity) params.set('city', course.campusCity);
@@ -18,7 +15,7 @@ export function CourseCard({ course, className }: CourseCardProps) {
   if (course.admissionForm) params.set('admissionForm', course.admissionForm);
 
   const queryString = params.toString();
-  const courseUrl = `/${institutionSlug}/cursos/detalhes/${course.id}${queryString ? `?${queryString}` : ''}`;
+  const courseUrl = `/cursos/detalhes/${course.id}${queryString ? `?${queryString}` : ''}`;
 
   return (
     <Link href={courseUrl} className={`${styles.card} ${className || ''}`}>

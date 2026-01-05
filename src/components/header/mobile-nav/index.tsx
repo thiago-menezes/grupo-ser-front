@@ -5,7 +5,7 @@ import mainNavStyles from '../main-nav/styles.module.scss';
 import styles from '../styles.module.scss';
 
 export const MobileNav = ({ mobileMenuOpen }: { mobileMenuOpen: boolean }) => {
-  const { institutionId, institutionName } = useCurrentInstitution();
+  const { institutionName } = useCurrentInstitution();
   const { city } = useCityContext();
 
   const buildGraduationUrl = () => {
@@ -14,7 +14,7 @@ export const MobileNav = ({ mobileMenuOpen }: { mobileMenuOpen: boolean }) => {
     if (city) {
       params.append('city', city);
     }
-    return `/${institutionId}/cursos?${params.toString()}`;
+    return `/cursos?${params.toString()}`;
   };
 
   const buildPostgraduateUrl = () => {
@@ -23,7 +23,7 @@ export const MobileNav = ({ mobileMenuOpen }: { mobileMenuOpen: boolean }) => {
     if (city) {
       params.append('city', city);
     }
-    return `/${institutionId}/cursos?${params.toString()}`;
+    return `/cursos?${params.toString()}`;
   };
 
   return (
@@ -42,29 +42,20 @@ export const MobileNav = ({ mobileMenuOpen }: { mobileMenuOpen: boolean }) => {
             Pós-Graduação
           </Link>
 
-          <Link
-            href={`/${institutionId}/cursos`}
-            className={styles.mobileNavLink}
-          >
+          <Link href="/cursos" className={styles.mobileNavLink}>
             Nossos cursos
           </Link>
 
-          <Link
-            href={`/${institutionId}/sobre`}
-            className={styles.mobileNavLink}
-          >
+          <Link href="/sobre" className={styles.mobileNavLink}>
             A {institutionName}
           </Link>
 
-          <Link
-            href={`/${institutionId}/ingresso`}
-            className={styles.mobileNavLink}
-          >
+          <Link href="/ingresso" className={styles.mobileNavLink}>
             Formas de ingresso
           </Link>
 
           <Button
-            href={`/${institutionId}/inscreva-se`}
+            href="/inscreva-se"
             color="primary"
             fullWidth
             className={mainNavStyles.secondaryButton}

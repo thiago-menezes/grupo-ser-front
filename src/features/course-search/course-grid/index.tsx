@@ -50,7 +50,7 @@ export function CourseGrid() {
     }
 
     const queryString = queryParams.toString();
-    const url = `/${institutionSlug}/cursos/${course.id}${queryString ? `?${queryString}` : ''}`;
+    const url = `/cursos/${course.id}${queryString ? `?${queryString}` : ''}`;
 
     router.push(url);
   };

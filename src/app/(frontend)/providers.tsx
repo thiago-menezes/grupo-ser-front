@@ -2,7 +2,6 @@
 
 import { QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-import { useParams } from 'next/navigation';
 import { PropsWithChildren, useLayoutEffect, useState } from 'react';
 import { Reshaped } from 'reshaped';
 import { CityProvider } from '@/contexts/city';
@@ -23,7 +22,7 @@ if (typeof window !== 'undefined') {
 
 export default function Providers({ children }: PropsWithChildren) {
   const [queryClient] = useState(() => makeQueryClient());
-  const { institution = 'grupo-ser' } = useParams<{ institution: string }>();
+  const institution = process.env.NEXT_PUBLIC_INSTITUTION || 'grupo-ser';
   const [delayToRender, setDelayToRender] = useState(true);
 
   useLayoutEffect(() => {

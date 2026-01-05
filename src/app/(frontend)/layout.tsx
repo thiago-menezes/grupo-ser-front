@@ -1,10 +1,11 @@
-import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
 import localFont from 'next/font/local';
 import 'reshaped/bundle.css';
-import Providers from './providers';
 import './icon/tabler-300.css';
 import '@/styles/global.scss';
+import { Footer, Header } from '@/components';
+import { generateJsonLd, generateMetadata } from '@/features/seo';
+import Providers from './providers';
 
 const inter = Inter({
   subsets: ['latin'],
@@ -23,17 +24,33 @@ const tablerIcons = localFont({
   preload: true,
 });
 
-export const metadata: Metadata = {
-  title: 'Grupo SER - Portal Institucional',
-  description: 'Portal multi-institucional do Grupo SER Educacional',
-  icons: {
-    icon: '/favicons/grupo-ser.ico',
-  },
-};
+export async function generateStaticParams() {
+  // Generate static params for all known institutions to avoid build-time CMS calls
+  // This allows the pages to be statically generated with fallback
+  const institutions = [
+    'unama',
+    'ung',
+    'uni7',
+    'unifael',
+    'uninassau',
+    'uninorte',
+  ];
 
-export default function RootLayout({
+  return institutions.map((institution) => ({
+    institution,
+  }));
+}
+
+export { generateMetadata };
+
+export default async function RootLayout({
   children,
-}: Readonly<{ children: React.ReactNode }>) {
+}: Readonly<{
+  children: React.ReactNode;
+}>) {
+  const institution = process.env.NEXT_PUBLIC_INSTITUTION || '';
+  const jsonLd = await generateJsonLd(institution);
+
   return (
     <html
       lang="pt-BR"
@@ -55,7 +72,17 @@ export default function RootLayout({
             `,
           }}
         />
-        <Providers>{children}</Providers>
+        {jsonLd && (
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+          />
+        )}
+        <Providers>
+          <Header />
+          {children}
+          <Footer />
+        </Providers>
       </body>
     </html>
   );

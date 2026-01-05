@@ -10,56 +10,47 @@ export type CourseDetailsParams = {
 
 export async function handleCourseDetailsFromStrapi(
   params: CourseDetailsParams,
-): Promise<CourseDetails> {
-  try {
-    const courseId = params.courseId?.trim();
-    const courseSku = params.courseSku?.trim();
+): Promise<CourseDetails | null> {
+  const courseId = params.courseId?.trim();
+  const courseSku = params.courseSku?.trim();
 
-    if (!courseId && !courseSku) {
-      throw new Error('CourseDetailsParams must include courseId or courseSku');
-    }
-
-    const courseResponse = await strapiFetch<StrapiCourseResponse>('courses', {
-      filters: {
-        ...(courseId
-          ? { id_do_curso: { $eq: courseId } }
-          : { sku: { $eq: courseSku } }),
-      },
-      populate: '*',
-      params: { publicationState: 'preview' },
-    });
-
-    if (!courseResponse.data || courseResponse.data.length === 0) {
-      throw new Error(
-        courseId
-          ? `Course not found with courseId: ${courseId}`
-          : `Course not found with SKU: ${courseSku}`,
-      );
-    }
-
-    const strapiCourse = courseResponse.data[0];
-    const courseDetails = transformStrapiCourse(strapiCourse);
-
-    if (strapiCourse.projeto_pedagogico) {
-      courseDetails.pedagogicalProject = {
-        content: strapiCourse.projeto_pedagogico,
-      };
-    }
-
-    if (strapiCourse.areas_atuacao && strapiCourse.areas_atuacao.length > 0) {
-      courseDetails.jobMarketAreas = strapiCourse.areas_atuacao;
-    }
-
-    if (
-      strapiCourse.faixas_salariais &&
-      strapiCourse.faixas_salariais.length > 0
-    ) {
-      courseDetails.salaryRanges = strapiCourse.faixas_salariais;
-    }
-
-    return courseDetails;
-  } catch (error) {
-    console.error('[CourseDetails] Error fetching from Strapi:', error);
-    throw error;
+  if (!courseId && !courseSku) {
+    return null;
   }
+
+  const courseResponse = await strapiFetch<StrapiCourseResponse>('courses', {
+    filters: {
+      ...(courseId
+        ? { id_do_curso: { $eq: courseId } }
+        : { sku: { $eq: courseSku } }),
+    },
+    populate: '*',
+    params: { publicationState: 'preview' },
+  });
+
+  if (!courseResponse?.data || courseResponse.data.length === 0) {
+    return null;
+  }
+
+  const strapiCourse = courseResponse.data[0];
+  const courseDetails = transformStrapiCourse(strapiCourse);
+
+  if (strapiCourse.projeto_pedagogico) {
+    courseDetails.pedagogicalProject = {
+      content: strapiCourse.projeto_pedagogico,
+    };
+  }
+
+  if (strapiCourse.areas_atuacao && strapiCourse.areas_atuacao.length > 0) {
+    courseDetails.jobMarketAreas = strapiCourse.areas_atuacao;
+  }
+
+  if (
+    strapiCourse.faixas_salariais &&
+    strapiCourse.faixas_salariais.length > 0
+  ) {
+    courseDetails.salaryRanges = strapiCourse.faixas_salariais;
+  }
+
+  return courseDetails;
 }

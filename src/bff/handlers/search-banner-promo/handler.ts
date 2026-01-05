@@ -23,5 +23,10 @@ export async function handleSearchBannerPromo(
     params.noCache,
   );
 
-  return data;
+  return (
+    data ?? {
+      data: [],
+      meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+    }
+  );
 }

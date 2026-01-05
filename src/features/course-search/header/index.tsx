@@ -1,15 +1,12 @@
 import Link from 'next/link';
 import { Text, View } from 'reshaped';
-import { useCurrentInstitution } from '@/hooks';
 import styles from './styles.module.scss';
 
 export function CourseSearchHeader() {
-  const { institutionId } = useCurrentInstitution();
-
   return (
     <View className={styles.header}>
       <Text variant="body-2" color="neutral-faded">
-        <Link className={styles.homeLink} href={`/${institutionId}`}>
+        <Link className={styles.homeLink} href="/">
           Home
         </Link>{' '}
         /{' '}

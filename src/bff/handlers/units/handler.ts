@@ -5,6 +5,11 @@ import type {
   UnitByIdQueryParams,
 } from './types';
 
+const emptyUnitsResponse: StrapiUnitsResponse = {
+  data: [],
+  meta: { pagination: { page: 1, pageSize: 0, pageCount: 0, total: 0 } },
+};
+
 export async function handleUnits(
   params: StrapiUnitsQueryParams,
 ): Promise<StrapiUnitsResponse> {
@@ -16,10 +21,8 @@ export async function handleUnits(
     },
   });
 
-  if (!institutionCheck.data || institutionCheck.data.length === 0) {
-    throw new Error(
-      `Institution with slug "${params.institutionSlug}" not found.`,
-    );
+  if (!institutionCheck?.data || institutionCheck.data.length === 0) {
+    return emptyUnitsResponse;
   }
 
   const units = await strapiFetch<StrapiUnitsResponse>('units', {
@@ -31,13 +34,7 @@ export async function handleUnits(
     populate: ['instituicao', 'fotos'],
   });
 
-  if (!units.data || units.data.length === 0) {
-    throw new Error(
-      `No units found for institution "${params.institutionSlug}".`,
-    );
-  }
-
-  return units;
+  return units ?? emptyUnitsResponse;
 }
 
 export async function handleUnitById(
@@ -53,11 +50,5 @@ export async function handleUnitById(
     populate: ['instituicao', 'fotos'],
   });
 
-  if (!units.data || units.data.length === 0) {
-    throw new Error(
-      `Unit with ID ${params.unitId} not found for institution "${params.institutionSlug}".`,
-    );
-  }
-
-  return units;
+  return units ?? emptyUnitsResponse;
 }

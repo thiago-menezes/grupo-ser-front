@@ -11,12 +11,8 @@ import { useHeroCarousel } from './hooks';
 import { QuickSearchForm } from './quick-search-form';
 import styles from './styles.module.scss';
 
-export type HomeHeroProps = {
-  institutionSlug: string;
-  showPlaceholder?: boolean;
-};
-
-function HeroContent({ institutionSlug }: HomeHeroProps) {
+export function HeroSection() {
+  const { institutionSlug } = useCurrentInstitution();
   const {
     data: { data: carouselItems = [] } = {},
     isLoading: isLoadingCarousel,
@@ -126,17 +122,11 @@ function HeroContent({ institutionSlug }: HomeHeroProps) {
 
           {content.showQuickSearch && (
             <div className={styles.searchFormContainer}>
-              <QuickSearchForm institutionSlug={institutionSlug} />
+              <QuickSearchForm />
             </div>
           )}
         </div>
       </div>
     </div>
   );
-}
-
-export function HeroSection() {
-  const { institutionId } = useCurrentInstitution();
-
-  return <HeroContent institutionSlug={institutionId} />;
 }

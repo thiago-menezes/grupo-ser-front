@@ -29,12 +29,8 @@ export async function generateJsonLd(
   }
 }
 
-export async function generateMetadata({
-  params,
-}: {
-  params: Promise<{ institution: string }>;
-}): Promise<Metadata> {
-  const { institution } = await params;
+export async function generateMetadata(): Promise<Metadata> {
+  const institution = process.env.NEXT_PUBLIC_INSTITUTION || '';
 
   const icons = {
     icon: `/favicons/${institution}.ico`,
@@ -46,6 +42,10 @@ export async function generateMetadata({
     description: 'Portal multi-institucional do Grupo SER Educacional',
     icons,
   };
+
+  if (!institution) {
+    return defaultMetadata;
+  }
 
   try {
     const seoData = await getSeoFromStrapi(institution);

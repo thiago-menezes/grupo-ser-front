@@ -21,10 +21,7 @@ import { buildSearchParams, formatCityValue } from '../utils';
 import styles from './styles.module.scss';
 import type { CourseLevel, QuickSearchFormProps } from './types';
 
-export function QuickSearchForm({
-  institutionSlug,
-  onSubmit,
-}: QuickSearchFormProps) {
+export function QuickSearchForm({ onSubmit }: QuickSearchFormProps) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
   const [activeTab, setActiveTab] = useState<CourseLevel>('graduation');
@@ -295,7 +292,7 @@ export function QuickSearchForm({
       }
 
       const params = buildSearchParams(searchData);
-      router.push(`/${institutionSlug}/cursos?${params.toString()}`);
+      router.push(`/cursos?${params.toString()}`);
     } catch {
       // Silently handle form submission errors
     } finally {

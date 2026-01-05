@@ -1,5 +1,5 @@
 import { startTransition, useCallback, useEffect, useState } from 'react';
-import { useCurrentInstitution, useQueryParams } from '@/hooks';
+import { useQueryParams } from '@/hooks';
 import type { CourseDetails } from '../types';
 
 export const useCourseDetailsContent = (course: CourseDetails) => {
@@ -23,8 +23,6 @@ export const useCourseDetailsContent = (course: CourseDetails) => {
     // Default to first shift
     return course.enrollment?.shifts?.[0]?.id ?? null;
   });
-
-  const { institutionSlug } = useCurrentInstitution();
 
   // Update selected shift when enrollment data changes
   useEffect(() => {
@@ -120,8 +118,8 @@ export const useCourseDetailsContent = (course: CourseDetails) => {
   );
 
   const breadcrumbItems = [
-    { label: 'Início', href: `/${institutionSlug}` },
-    { label: 'Cursos', href: `/${institutionSlug}/cursos` },
+    { label: 'Início', href: '/' },
+    { label: 'Cursos', href: '/cursos' },
     { label: course.name },
   ];
 
